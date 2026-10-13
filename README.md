@@ -100,7 +100,7 @@ python cli.py init-repo C:\Dev\Projetos\NovoApp
 ## 4. Estrutura de Diretórios do DevTeam
 
 ```text
-C:\Dev\Projetos\Particular\DevTeam\
+C:\Dev\Projetos\Particular\dev-team\
 ├── rules/
 │   └── GEMINI.md                             # Governança mestre, 3 trilhas e naming conventions
 ├── skills/
