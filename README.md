@@ -1,129 +1,144 @@
 # DevTeam: Time Multi-Agente de Engenharia Ágil & Docs-as-Code
 
-Bem-vindo ao **DevTeam**, um ecossistema multi-agente de desenvolvimento de software de alta performance para o Google Antigravity e VS Code, orientado à governança **Docs-as-Code**.
+Bem-vindo ao **DevTeam**, um ecossistema multi-agente de desenvolvimento de software de alta performance para o Google Antigravity e VS Code, orientado à governança corporativa **Docs-as-Code**.
 
-O DevTeam estrutura três papéis essenciais e independentes que trabalham em pipeline contínuo, cobrindo todo o ciclo de vida do software: **Features**, **Correção de Bugs (TDD Red/Green)** e **Decisões de Arquitetura (ADRs)**.
+O DevTeam estrutura cinco especialidades independentes que operam em pipeline contínuo e colaborativo, cobrindo todo o ciclo de vida do software: **Analista de Requisitos (AR)**, **UX / Product Designer**, **Tech Lead / Architect**, **Product Owner (PO)** e **Developer**.
 
 ```mermaid
 graph TD
-    subgraph AR [Analista de Requisitos]
-        A1[Entrevista Investigativa] --> A2[PRD 0.1.0..0.x.0]
-        A2 --> A3[Homologação 1.0.0 Approved]
-    end
+    Demanda([Nova Demanda do Usuário]) --> MODO{Modo de Operação?}
 
-    subgraph PO [Product Owner]
-        B1[Validação do PRD] --> B2[Histórias BDD/Gherkin + Schemas + Restrições]
-        B2 --> B3[Aprovação do Usuário]
-    end
+    MODO --> AR["1. Analista de Requisitos (AR)<br/>Elicitação & PRD com Triagem"]
 
-    subgraph DEV [Developer]
-        C1[Planejamento & ADR] --> C2[Código de Produção]
-        C2 --> C3[Testes Automatizados 100% Verdes]
-    end
+    AR --> TRIAGE{"Orquestrador<br/>Triagem de Impacto"}
 
-    AR -->|PRD 1.0.0 em docs/product/| PO
-    PO -->|Histórias em docs/specs/| DEV
+    TRIAGE -->|"Impacto em UX"| UX["2. UX Designer<br/>Jornada UJ & Protótipo Visual"]
+    TRIAGE -->|"Impacto em Arquitetura"| TL["2. Tech Lead / Architect<br/>ADR & Contratos OpenAPI"]
+    TRIAGE -->|"Ambos"| BOTH["UX Designer + Tech Lead<br/>em paralelo"]
+    TRIAGE -->|"Nenhum"| APPROVE["Requisitos Consolidados"]
+
+    UX --> APPROVE
+    TL --> APPROVE
+    BOTH --> APPROVE
+
+    APPROVE --> PO_FEAT["3. Product Owner (PO)<br/>Features & Escopo Macro"]
+    PO_FEAT --> PO_US["3. Product Owner (PO)<br/>User Stories BDD/Gherkin"]
+
+    PO_US --> READY["Status → Ready for Development"]
+
+    READY --> DEV_GATE{Modo?}
+
+    DEV_GATE -->|"Docs-as-Code Exclusivo"| HANDOFF([Handoff para Times Externos])
+    DEV_GATE -->|"Ciclo Completo"| DEV["4. Developer<br/>Implementação TDD (Red/Green)"]
+
+    DEV --> LOOP{"Próxima Feature"}
+    LOOP -.-> PO_FEAT
 ```
 
 ---
 
-## 1. As Três Trilhas Operacionais
+## 0. Regra Mestre de Override (Inversão de Controle & DEC-034)
 
-### 1.1. Trilha de Novas Funcionalidades (Evolução)
-* **Analista de Requisitos (AR)**: Elicitação exaustiva de requisitos em `./docs/product/prd-<feature>.md`.
-* **Product Owner (PO)**: Decomposição em Histórias de Usuário em `./docs/specs/us-<feature>.md` contendo critérios Gherkin, contratos JSON opcionais, testes e restrições ("O que NÃO fazer").
-* **Developer**: Implementação TDD com garantia de testes locais verdes.
+O DevTeam opera com **inteligência subordinada**:
 
-### 1.2. Trilha de Sustentação de Bugs (Bug Track)
-* Erro reportado com evidências e payload.
-* Skill `diagnostico-bug` gera especificação em `./docs/specs/bug-<slug>.md`.
-* **Developer** aplica o ciclo **TDD Red/Green**: primeiro cria o teste que reproduz a falha (Red) e depois aplica a correção até passar (Green) sem regressão.
-
-### 1.3. Trilha de Decisão Arquitetural (Architecture Track)
-* Dilema técnico de persistência, framework ou dependência de infraestrutura.
-* Registro formal em `./docs/architecture/adr-<001>-<slug>.md` avaliando alternativas, prós, contras e trade-offs.
+1. **Subordinação ao Manifesto do Projeto (`AGENTS.md`)**: A primeira ação mandatória de qualquer agente é ler o `AGENTS.md` (ou `AI_GOVERNANCE.md`) na raiz do repositório alvo. As diretrizes locais, convenções de branches, templates e Quality Gates organizacionais sobrepõem sumariamente quaisquer definições internas do time.
+2. **Proibição Absoluta de Arquivos Proprietários (DEC-034)**: O DevTeam é terminantemente proibido de criar arquivos de configuração internos (como `.devteamrc` ou `.devteam-config.yml`) no projeto consumidor. O projeto alvo permanece 100% limpo de metadados da equipe.
+3. **Vendoring Estático**: Os padrões de engenharia e governança residem no cache local do projeto consumidor (ex: `.ai-standards/`), sendo atualizados sob demanda pelo próprio projeto, sem injeções dinâmicas a cada invocação.
 
 ---
 
-## 2. Como Usar no Antigravity
+## 1. As Cinco Especialidades da Equipe
 
-Você pode interagir com o time no chat do Antigravity através de comandos ou linguagem natural:
+O DevTeam fornece os papéis e comportamentos especializados, enquanto **o nome, formato e diretório de cada artefato são 100% governados pelo manifesto `AGENTS.md` do projeto consumidor** (Inversão de Controle). 
 
-* **Iniciar o Ciclo Completo de Feature**:
-  > *"Vamos iniciar a funcionalidade de autenticação por e-mail com o DevTeam."*  
-  *(Ativa a skill `devteam-pipeline` que guia você pelas fases).*
+Abaixo estão as responsabilidades de cada papel e, a título de referência, a convenção semântica recomendada pelo framework corporativo (DEC-024) quando adotada pelo projeto:
 
-* **Acionar Fases ou Trilhas Específicas**:
-  - **Fase de Requisitos**: *"Atue como o Analista de Requisitos e me entreviste sobre o recurso X."*
-  - **Fase de Refinamento**: *"Atue como o Product Owner e refine as histórias para o PRD v1.0 do recurso X."*
-  - **Correção de Bug**: *"Atue como o time para diagnosticar o erro 500 no endpoint de checkout."*
-  - **Decisão Arquitetural**: *"Registre uma ADR para avaliar a migração de SQLite para PostgreSQL."*
+### 1.1. Analista de Requisitos (AR)
+* **Atribuição**: Elicitação profunda através de questionamento investigativo exaustivo, delimitação de escopo, regras de negócio e preenchimento da Triagem de Impacto.
+* **Modelo LLM**: Tier nativo `flash` (alta velocidade, ampla janela de contexto e baixo custo).
+* **Artefato Típico (Ref. DEC-024)**: `PRD-<numero>-<slug>.md` (conforme convenção indicada no `AGENTS.md` local).
+
+### 1.2. UX / Product Designer
+* **Atribuição**: Mapeamento de fluxos de interação, estados de interface, microinterações e protótipos funcionais interativos (Living Specs em React/Tailwind ou HTML).
+* **Modelo LLM**: Tier nativo `pro` (design system, fidelidade visual e raciocínio de interface).
+* **Artefatos Típicos (Ref. DEC-024)**:
+  - Jornada do Usuário: `UJ-<numero>-<slug>.md`
+  - Protótipos: código interativo no diretório designado pelo projeto consumidor.
+
+### 1.3. Tech Lead / Architect
+* **Atribuição**: Avaliação de viabilidade técnica, modelagem de dados, especificações formais de API (OpenAPI/Swagger) e registro formal de trade-offs arquiteturais.
+* **Modelo LLM**: Tier nativo `pro` (alta precisão arquitetural, contratos e raciocínio técnico profundo).
+* **Artefato Típico (Ref. DEC-024)**: `ADR-<numero>-<slug>.md` (Decisão Arquitetural) e esquemas de API.
+
+### 1.4. Product Owner (PO)
+* **Atribuição**: Decomposição em Features de negócio e desdobramento em Histórias de Usuário atômicas com critérios de aceite em BDD/Gherkin, contratos e restrições.
+* **Modelo LLM**: Tier nativo `flash` (precisão estruturada e formatação consistente).
+* **Artefatos Típicos (Ref. DEC-024)**:
+  - Feature: `FEAT-<numero>-<slug>.md`
+  - História de Usuário: `US-<numero>-<slug>.md`
+
+### 1.5. Developer
+* **Atribuição**: Implementação do código de produção e testes automatizados com ciclo TDD rigoroso (Red/Green), respeitando as USs, protótipos e contratos aprovados. Suporta paralelismo (ex: Frontend e Backend simultâneos).
+* **Modelo LLM**: Tier nativo `pro` (programação avançada, testes automatizados e raciocínio multifile).
+* **Trilha de Sustentação de Bugs (Bug Track)**: `BUG-<numero>-<slug>.md` com roteiro de reprodução e teste de regressão.
 
 ---
 
-## 3. Utilitários de Linha de Comando (`cli.py` / `cli.ps1`)
+## 2. Modos de Operação do Time
 
-O DevTeam disponibiliza scripts multiplataforma para terminal (Python ou PowerShell nativo):
+O DevTeam adapta sua atuação conforme o escopo acordado no projeto:
 
-```bash
-# Inspecionar PRDs, USs, Bugs e ADRs ativos
-python cli.py status
-.\cli.ps1 status
+* **Modo A: Docs-as-Code Exclusivo**: Atuação estritamente analítica e arquitetural (Requisitos, UX, Arquitetura e Histórias de Usuário). O time **não cria nem edita código de produção**, entregando especificações blindadas para times ou desenvolvedores externos.
+* **Modo B: Ciclo Completo (End-to-End)**: Concepção completa via Docs-as-Code seguida de implementação em código de produção e testes unitários/integração verdes pelo Developer.
 
-# Criar um novo PRD oficial com Frontmatter YAML
-python cli.py new-prd autenticacao-otp
-.\cli.ps1 new-prd autenticacao-otp
+---
 
-# Criar uma nova História de Usuário (US) blindada
-python cli.py new-us login-google
-.\cli.ps1 new-us login-google
+## 3. Como Usar no Google Antigravity
 
-# Criar uma especificação de Bug com roteiro TDD Red/Green
-python cli.py new-bug erro-500-token
-.\cli.ps1 new-bug erro-500-token
+Você pode interagir diretamente com o DevTeam no chat do Antigravity via linguagem natural:
 
-# Registrar uma Decisão de Arquitetura (ADR com numeração automática)
-python cli.py new-adr adocao-fastapi
-.\cli.ps1 new-adr adocao-fastapi
+* **Ciclo Completo de Feature**:
+  > *"Vamos iniciar a funcionalidade de autenticação social com o DevTeam."*
 
-# Criar um protótipo de tela interativo em React + Tailwind (Living Spec)
-python cli.py new-proto checkout-fluxo
-.\cli.ps1 new-proto checkout-fluxo
+* **Fase de Requisitos**:
+  > *"Atue como o Analista de Requisitos e conduza a entrevista investigativa para o recurso X."*
 
-# Inicializar um novo projeto para receber o DevTeam (com AGENTS.md e docs/prototypes)
-python cli.py init-repo C:\Dev\Projetos\NovoApp
-.\cli.ps1 init-repo C:\Dev\Projetos\NovoApp
-```
+* **Fase de Experiência e Prototipação**:
+  > *"Atue como o UX Designer e crie a jornada UJ e o protótipo da tela de checkout."*
+
+* **Fase de Arquitetura e Decisão**:
+  > *"Atue como o Tech Lead e avalie a migração de cache com uma ADR comparando Redis e Memcached."*
+
+* **Fase de Refinamento de Histórias**:
+  > *"Atue como o Product Owner e decomponha a Feature X em User Stories BDD."*
+
+* **Fase de Implementação de Código**:
+  > *"Atue como o Developer e implemente a US-001 com cobertura total de testes em TDD."*
+
+* **Diagnóstico e Correção de Bug**:
+  > *"Atue como o time para diagnosticar o erro 500 no endpoint de pagamentos e gerar o BUG-001."*
 
 ---
 
 ## 4. Estrutura de Diretórios do DevTeam
 
+Estrutura canônica do plugin:
+
 ```text
 C:\Dev\Projetos\Particular\dev-team\
-├── rules/
-│   └── GEMINI.md                             # Governança mestre, 3 trilhas e naming conventions
-├── skills/
-│   ├── devteam-pipeline/                     # Orquestrador do fluxo completo (com Gate 0)
-│   ├── analise-requisitos/                   # Habilidade do Analista (PRD)
-│   ├── refinamento-po/                       # Habilidade do PO (US / BDD)
-│   ├── desenvolvimento/                      # Habilidade do Developer (TDD / Prototipação)
-│   ├── prototipacao-ui/                      # Habilidade de prototipação visual em React
-│   ├── diagnostico-bug/                      # Habilidade de triagem de bugs (Red/Green)
-│   └── decisao-arquitetural/                 # Habilidade de ADRs arquiteturais
 ├── config/
-│   └── model_router.json                     # Matriz de LLMs por papel
-├── docs/
-│   └── templates/
-│       ├── PRD-template.md                   # Modelo oficial com Frontmatter YAML
-│       ├── STORY-template.md                 # Modelo de Histórias (BDD + Schemas + Restrições + Protótipo)
-│       ├── BUG-template.md                   # Modelo de Bug (Causa Raiz + TDD)
-│       └── ADR-template.md                   # Modelo de Decisão Arquitetural
-├── templates/
-│   └── repo-blueprint/
-│       └── AGENTS.md                         # Blueprint mestre para novos repositórios
-├── cli.py                                    # Utilitário CLI Python
-├── cli.ps1                                   # Utilitário CLI PowerShell
+│   └── model_router.json                     # Matriz de LLMs por papel (tiers nativos flash e pro)
+├── rules/
+│   └── GEMINI.md                             # Governança mestre, 5 papéis e protocolo de orquestração
+├── skills/
+│   ├── analise-requisitos/                   # Habilidade do AR (PRD com Triagem de Impacto)
+│   ├── prototipacao-ui/                      # Habilidade do UX Designer (Protótipos React e Jornada UJ)
+│   ├── decisao-arquitetural/                 # Habilidade do Tech Lead (ADRs e Trade-offs)
+│   ├── design-api-contratos/                 # Habilidade do Tech Lead (Contratos OpenAPI e Schemas)
+│   ├── refinamento-po/                       # Habilidade do PO (Features e US com BDD/Gherkin)
+│   ├── desenvolvimento/                      # Habilidade do Developer (TDD Red/Green e Paralelismo)
+│   └── diagnostico-bug/                      # Habilidade de triagem e especificação de bugs
+├── hooks.json                                # Configuração de hooks do Antigravity
 ├── plugin.json                               # Manifesto do plugin Antigravity
 └── README.md                                 # Este manual
 ```

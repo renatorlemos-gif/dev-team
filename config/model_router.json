@@ -2,38 +2,63 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "DevTeam Model Router",
   "description": "Configuração da matriz de modelos LLM por papel, balanceamento de custo-benefício e regras para seleção dinâmica.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "default_mode": "cost_benefit",
   "roles": {
     "analista_requisitos": {
       "name": "Analista de Requisitos",
-      "default_model": "gemini-2.5-flash",
+      "tier": "flash",
+      "default_model": "flash",
       "temperature": 0.3,
       "rationale": "Ampla janela de contexto para conversações longas, altíssima velocidade e custo de inferência desprezível durante rodadas investigativas exaustivas.",
       "dynamic_escalation": {
         "condition": "demanda envolver integração com múltiplos sistemas legados, normas regulatórias complexas ou modelagem matemática/financeira",
-        "escalated_model": "gemini-2.5-pro"
+        "escalated_model": "pro"
+      }
+    },
+    "ux_designer": {
+      "name": "UX / Product Designer",
+      "tier": "pro",
+      "default_model": "pro",
+      "temperature": 0.3,
+      "rationale": "Prototipação interativa, design system e jornadas visuais (Living Specs em React/Tailwind, acessibilidade e microinterações).",
+      "dynamic_downgrade": {
+        "condition": "ajustes simples de layout ou documentação de jornadas em markdown sem componentes visuais complexos",
+        "downgraded_model": "flash"
+      }
+    },
+    "tech_lead": {
+      "name": "Tech Lead / Architect",
+      "tier": "pro",
+      "default_model": "pro",
+      "temperature": 0.2,
+      "rationale": "Modelagem de dados, contratos OpenAPI, trade-offs técnicos em ADRs e decisões arquiteturais de alta fidelidade.",
+      "dynamic_downgrade": {
+        "condition": "especificações triviais de rotas ou consultas a padrões arquiteturais já consolidados",
+        "downgraded_model": "flash"
       }
     },
     "product_owner": {
       "name": "Product Owner",
-      "default_model": "gemini-2.5-flash",
+      "tier": "flash",
+      "default_model": "flash",
       "temperature": 0.2,
       "rationale": "Excelente formatação estruturada, rigor sintático em BDD/Gherkin e alta precisão com custo reduzido.",
       "dynamic_escalation": {
         "condition": "gerenciamento de épicos corporativos massivos com mais de 30 histórias interdependentes",
-        "escalated_model": "gemini-2.5-pro"
+        "escalated_model": "pro"
       }
     },
     "developer": {
       "name": "Developer",
-      "default_model": "gemini-2.5-pro",
-      "fallback_model": "gemini-2.5-flash",
+      "tier": "pro",
+      "default_model": "pro",
+      "fallback_model": "flash",
       "temperature": 0.1,
       "rationale": "Elevada acurácia sintática, raciocínio em múltiplos arquivos, refatorações sem regressão e geração precisa de suítes de testes.",
       "dynamic_downgrade": {
-        "condition": "tarefas simples como scripts de automação, ajustes cosméticos de HTML/CSS ou documentação técnica",
-        "downgraded_model": "gemini-2.5-flash"
+        "condition": "tarefas simples como scripts utilitários, ajustes cosméticos pontuais ou documentação técnica",
+        "downgraded_model": "flash"
       }
     }
   },
@@ -41,29 +66,51 @@
     "criteria": [
       {
         "complexity_level": "Baixa (Small)",
-        "indicators": ["CRUD padrão", "Ajustes de texto/UI", "Scripts utilitários", "Bug fixes simples"],
+        "indicators": [
+          "CRUD padrão",
+          "Ajustes de texto/UI",
+          "Scripts utilitários",
+          "Bug fixes simples"
+        ],
         "assigned_models": {
-          "analista": "gemini-2.5-flash",
-          "po": "gemini-2.5-flash",
-          "developer": "gemini-2.5-flash"
+          "analista": "flash",
+          "ux_designer": "flash",
+          "tech_lead": "flash",
+          "po": "flash",
+          "developer": "flash"
         }
       },
       {
         "complexity_level": "Média (Medium)",
-        "indicators": ["Novas rotas de API com regras de validação", "Modelagem de tabelas relacionais", "Testes unitários extensivos"],
+        "indicators": [
+          "Novas rotas de API com regras de validação",
+          "Modelagem de tabelas relacionais",
+          "Protótipos de média fidelidade",
+          "Testes unitários extensivos"
+        ],
         "assigned_models": {
-          "analista": "gemini-2.5-flash",
-          "po": "gemini-2.5-flash",
-          "developer": "gemini-2.5-pro"
+          "analista": "flash",
+          "ux_designer": "pro",
+          "tech_lead": "pro",
+          "po": "flash",
+          "developer": "pro"
         }
       },
       {
         "complexity_level": "Alta (Large / Critical)",
-        "indicators": ["Arquitetura distribuída / Microsserviços", "Concorrência e Locks", "Criptografia e Segurança Bancária", "Refatoração de Legado Amplo"],
+        "indicators": [
+          "Arquitetura distribuída / Microsserviços",
+          "Concorrência e Locks",
+          "Jornadas críticas com prototipação avançada",
+          "Criptografia e Segurança Bancária",
+          "Refatoração de Legado Amplo"
+        ],
         "assigned_models": {
-          "analista": "gemini-2.5-pro",
-          "po": "gemini-2.5-flash",
-          "developer": "gemini-2.5-pro"
+          "analista": "pro",
+          "ux_designer": "pro",
+          "tech_lead": "pro",
+          "po": "pro",
+          "developer": "pro"
         }
       }
     ]
