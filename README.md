@@ -55,31 +55,31 @@ Abaixo estão as responsabilidades de cada papel e, a título de referência, a 
 
 ### 1.1. Analista de Requisitos (AR)
 * **Atribuição**: Elicitação profunda através de questionamento investigativo exaustivo, delimitação de escopo, regras de negócio e preenchimento da Triagem de Impacto.
-* **Modelo LLM**: Tier nativo `flash` (alta velocidade, ampla janela de contexto e baixo custo).
+* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `low` (altíssima velocidade, ampla janela de contexto e consumo mínimo de tokens de reflexão).
 * **Artefato Típico (Ref. DEC-024)**: `PRD-<numero>-<slug>.md` (conforme convenção indicada no `AGENTS.md` local).
 
 ### 1.2. UX / Product Designer
 * **Atribuição**: Mapeamento de fluxos de interação, estados de interface, microinterações e protótipos funcionais interativos (Living Specs em React/Tailwind ou HTML).
-* **Modelo LLM**: Tier nativo `pro` (design system, fidelidade visual e raciocínio de interface).
+* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `medium`. Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para interfaces com múltiplos estados concorrentes complexos.
 * **Artefatos Típicos (Ref. DEC-024)**:
   - Jornada do Usuário: `UJ-<numero>-<slug>.md`
   - Protótipos: código interativo no diretório designado pelo projeto consumidor.
 
 ### 1.3. Tech Lead / Architect
 * **Atribuição**: Avaliação de viabilidade técnica, modelagem de dados, especificações formais de API (OpenAPI/Swagger) e registro formal de trade-offs arquiteturais.
-* **Modelo LLM**: Tier nativo `pro` (alta precisão arquitetural, contratos e raciocínio técnico profundo).
+* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `high` (reflexão aprofundada para evitar débitos técnicos). Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para arquiteturas distribuídas de missão crítica e concorrência severa.
 * **Artefato Típico (Ref. DEC-024)**: `ADR-<numero>-<slug>.md` (Decisão Arquitetural) e esquemas de API.
 
 ### 1.4. Product Owner (PO)
 * **Atribuição**: Decomposição em Features de negócio e desdobramento em Histórias de Usuário atômicas com critérios de aceite em BDD/Gherkin, contratos e restrições.
-* **Modelo LLM**: Tier nativo `flash` (precisão estruturada e formatação consistente).
+* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `medium` (precisão estruturada e formatação consistente sem queima de cota).
 * **Artefatos Típicos (Ref. DEC-024)**:
   - Feature: `FEAT-<numero>-<slug>.md`
   - História de Usuário: `US-<numero>-<slug>.md`
 
 ### 1.5. Developer
 * **Atribuição**: Implementação do código de produção e testes automatizados com ciclo TDD rigoroso (Red/Green), respeitando as USs, protótipos e contratos aprovados. Suporta paralelismo (ex: Frontend e Backend simultâneos).
-* **Modelo LLM**: Tier nativo `pro` (programação avançada, testes automatizados e raciocínio multifile).
+* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `high` (simulação mental de testes e cobertura completa). Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para refatoração de código com acoplamento massivo ou após 2 tentativas de falha de teste no Flash.
 * **Trilha de Sustentação de Bugs (Bug Track)**: `BUG-<numero>-<slug>.md` com roteiro de reprodução e teste de regressão.
 
 ---
@@ -127,7 +127,7 @@ Estrutura canônica do plugin:
 ```text
 C:\Dev\Projetos\Particular\dev-team\
 ├── config/
-│   └── model_router.json                     # Matriz de LLMs por papel (tiers nativos flash e pro)
+│   └── model_router.json                     # Matriz Flash-First, esforço de raciocínio (thinking effort) e gate de cota
 ├── rules/
 │   └── GEMINI.md                             # Governança mestre, 5 papéis e protocolo de orquestração
 ├── skills/

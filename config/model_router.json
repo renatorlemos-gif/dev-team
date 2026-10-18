@@ -1,68 +1,93 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "DevTeam Model Router",
-  "description": "Configuração da matriz de modelos LLM por papel, balanceamento de custo-benefício e regras para seleção dinâmica.",
-  "version": "1.1.0",
-  "default_mode": "cost_benefit",
+  "description": "Matriz de roteamento de LLMs por papel com política Flash-First, calibragem de esforço de raciocínio (thinking effort) e gate de aprovação humana para escalação ao Argon.",
+  "version": "1.2.0",
+  "default_mode": "flash_first",
+  "runtime_platform_mapping": {
+    "flash": "Gemini 3.8 Flash",
+    "pro": "Gemini 4 Argon"
+  },
   "roles": {
     "analista_requisitos": {
       "name": "Analista de Requisitos",
       "tier": "flash",
       "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "low",
+      "thinking_budget_rationale": "Diálogos investigativos de elicitação e entrevistas iterativas exigem resposta rápida e baixo consumo de tokens de raciocínio.",
       "temperature": 0.3,
-      "rationale": "Ampla janela de contexto para conversações longas, altíssima velocidade e custo de inferência desprezível durante rodadas investigativas exaustivas.",
       "dynamic_escalation": {
-        "condition": "demanda envolver integração com múltiplos sistemas legados, normas regulatórias complexas ou modelagem matemática/financeira",
-        "escalated_model": "pro"
+        "condition": "demanda envolver integração com múltiplos sistemas legados críticos, conformidade regulatória complexa ou modelagem matemática densa",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
       }
     },
     "ux_designer": {
       "name": "UX / Product Designer",
-      "tier": "pro",
-      "default_model": "pro",
+      "tier": "flash",
+      "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "medium",
+      "thinking_budget_rationale": "Mapeamento de jornada e criação de protótipos funcionais (React + Tailwind CDN / HTML) operam com alta qualidade em esforço médio de raciocínio visual.",
       "temperature": 0.3,
-      "rationale": "Prototipação interativa, design system e jornadas visuais (Living Specs em React/Tailwind, acessibilidade e microinterações).",
-      "dynamic_downgrade": {
-        "condition": "ajustes simples de layout ou documentação de jornadas em markdown sem componentes visuais complexos",
-        "downgraded_model": "flash"
+      "dynamic_escalation": {
+        "condition": "telas com múltiplos estados concorrentes altamente complexos, visualizações gráficas avançadas ou microinterações complexas",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
       }
     },
     "tech_lead": {
       "name": "Tech Lead / Architect",
-      "tier": "pro",
-      "default_model": "pro",
+      "tier": "flash",
+      "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "high",
+      "thinking_budget_rationale": "Decisões arquiteturais (ADRs), schemas e contratos técnicos OpenAPI executados no 3.8 Flash demandam esforço alto de raciocínio para prevenir débitos técnicos.",
       "temperature": 0.2,
-      "rationale": "Modelagem de dados, contratos OpenAPI, trade-offs técnicos em ADRs e decisões arquiteturais de alta fidelidade.",
-      "dynamic_downgrade": {
-        "condition": "especificações triviais de rotas ou consultas a padrões arquiteturais já consolidados",
-        "downgraded_model": "flash"
+      "dynamic_escalation": {
+        "condition": "arquitetura distribuída de missão crítica, concorrência massiva/locks, criptografia/segurança financeira ou particionamento de microsserviços",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
       }
     },
     "product_owner": {
       "name": "Product Owner",
       "tier": "flash",
       "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "medium",
+      "thinking_budget_rationale": "Decomposição em Features e Histórias de Usuário atômicas com critérios BDD/Gherkin requer raciocínio estruturado moderado para garantir DoR/DoD consistente.",
       "temperature": 0.2,
-      "rationale": "Excelente formatação estruturada, rigor sintático em BDD/Gherkin e alta precisão com custo reduzido.",
       "dynamic_escalation": {
-        "condition": "gerenciamento de épicos corporativos massivos com mais de 30 histórias interdependentes",
-        "escalated_model": "pro"
+        "condition": "épicos corporativos massivos com dezenas de histórias interdependentes e dependências cruzadas entre múltiplos domínios",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
       }
     },
     "developer": {
       "name": "Developer",
-      "tier": "pro",
-      "default_model": "pro",
-      "fallback_model": "flash",
+      "tier": "flash",
+      "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "high",
+      "thinking_budget_rationale": "Ciclo TDD rigoroso (Red/Green), implementação e testes automatizados no 3.8 Flash requerem esforço alto de reflexão para garantir código limpo e testes verdes na primeira rodada.",
       "temperature": 0.1,
-      "rationale": "Elevada acurácia sintática, raciocínio em múltiplos arquivos, refatorações sem regressão e geração precisa de suítes de testes.",
-      "dynamic_downgrade": {
-        "condition": "tarefas simples como scripts utilitários, ajustes cosméticos pontuais ou documentação técnica",
-        "downgraded_model": "flash"
+      "dynamic_escalation": {
+        "condition": "refatoração profunda de múltiplos arquivos legados com acoplamento crítico, algoritmos de alta densidade matemática ou falha dos testes após 2 rodadas consecutivas no Flash",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
       }
     }
   },
   "automated_routing_strategy": {
+    "escalation_policy": "human_in_the_loop",
+    "rule": "O Orquestrador nunca invoca o tier 'pro' (Argon) automaticamente. Sempre que a complexidade exigir escalação, ele deve sugerir no chat e aguardar autorização do usuário.",
     "criteria": [
       {
         "complexity_level": "Baixa (Small)",
@@ -78,39 +103,66 @@
           "tech_lead": "flash",
           "po": "flash",
           "developer": "flash"
+        },
+        "thinking_efforts": {
+          "analista": "low",
+          "ux_designer": "low",
+          "tech_lead": "medium",
+          "po": "low",
+          "developer": "medium"
         }
       },
       {
         "complexity_level": "Média (Medium)",
         "indicators": [
-          "Novas rotas de API com regras de validação",
-          "Modelagem de tabelas relacionais",
-          "Protótipos de média fidelidade",
-          "Testes unitários extensivos"
+          "Novas rotas de API com validação",
+          "Modelagem relacional de tabelas",
+          "Protótipos visuais interativos",
+          "Testes unitários e de integração completos"
         ],
         "assigned_models": {
           "analista": "flash",
-          "ux_designer": "pro",
-          "tech_lead": "pro",
+          "ux_designer": "flash",
+          "tech_lead": "flash",
           "po": "flash",
-          "developer": "pro"
+          "developer": "flash"
+        },
+        "thinking_efforts": {
+          "analista": "low",
+          "ux_designer": "medium",
+          "tech_lead": "high",
+          "po": "medium",
+          "developer": "high"
         }
       },
       {
         "complexity_level": "Alta (Large / Critical)",
         "indicators": [
           "Arquitetura distribuída / Microsserviços",
-          "Concorrência e Locks",
+          "Concorrência pesada e Locks",
           "Jornadas críticas com prototipação avançada",
           "Criptografia e Segurança Bancária",
           "Refatoração de Legado Amplo"
         ],
         "assigned_models": {
-          "analista": "pro",
-          "ux_designer": "pro",
-          "tech_lead": "pro",
-          "po": "pro",
-          "developer": "pro"
+          "analista": "flash",
+          "ux_designer": "flash",
+          "tech_lead": "flash",
+          "po": "flash",
+          "developer": "flash"
+        },
+        "thinking_efforts": {
+          "analista": "medium",
+          "ux_designer": "high",
+          "tech_lead": "high",
+          "po": "high",
+          "developer": "high"
+        },
+        "escalation_available": {
+          "target_tier": "pro",
+          "target_runtime_model": "Gemini 4 Argon",
+          "candidate_roles": ["tech_lead", "ux_designer", "developer"],
+          "requires_explicit_user_consent": true
         }
       }
     ]

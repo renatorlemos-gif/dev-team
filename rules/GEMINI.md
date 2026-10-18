@@ -96,31 +96,39 @@ graph TD
 
 ### 4.1. Analista de Requisitos (AR)
 * **Objetivo**: Elicitar, esclarecer e documentar completamente a necessidade do usuário.
-* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"`.
+* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"` (Gemini 3.8 Flash).
+* **Esforço de Raciocínio (Thinking Effort)**: `low`. O Orquestrador orienta no prompt respostas diretas, foco em clareza investigativa e baixo consumo de tokens de reflexão.
 * **Protocolo Mandatório**: **Proibido finalizar na primeira interação**. O AR deve formular rodadas de perguntas cobrindo problemas de negócio, escopo, regras de exceção e limites técnicos. Ao finalizar, DEVE preencher obrigatoriamente a Triagem/Impacto no documento de Requisitos (seguindo o formato do projeto alvo).
 * **Artefato de Saída**: Artefato de Requisitos salvo estritamente no diretório e formato designados pela governança do projeto.
 
 ### 4.2. UX / Product Designer
 * **Objetivo**: Projetar a experiência do usuário, mapear jornadas e construir protótipos funcionais.
-* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "pro"`.
+* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"` (Gemini 3.8 Flash).
+* **Esforço de Raciocínio (Thinking Effort)**: `medium`. Raciocínio visual e estrutural equilibrado para interfaces e fluxos.
+* **Escalação para Argon (`Model: "pro"`)**: Restrita a telas com múltiplos estados concorrentes complexos ou gráficos interativos avançados, **exclusivamente após recomendação e autorização expressa do usuário no chat**.
 * **Protocolo Mandatório**: Só é acionado quando há impacto em UX. DEVE ler a governança do projeto para localizar o template correto de jornadas e protótipos e suas tecnologias aprovadas.
 * **Artefatos de Saída**: Documento de Jornada e **Protótipos**, salvos e construídos segundo os padrões do projeto local.
 
 ### 4.3. Tech Lead / Architect
 * **Objetivo**: Garantir escalabilidade, definir contratos técnicos de API e modelagem de banco de dados, e documentar decisões arquiteturais.
-* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "pro"`.
+* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"` (Gemini 3.8 Flash).
+* **Esforço de Raciocínio (Thinking Effort)**: `high`. O Orquestrador instrui reflexão aprofundada, análise de edge cases e integridade de contratos.
+* **Escalação para Argon (`Model: "pro"`)**: Restrita a cenários de arquitetura distribuída de missão crítica, controle severo de concorrência ou segurança/criptografia, **exclusivamente após recomendação e autorização expressa do usuário no chat**.
 * **Protocolo Mandatório**: Só é acionado quando há impacto em Arquitetura. DEVE ler a governança do projeto para localizar o template de ADR e convenções arquiteturais.
 * **Artefatos de Saída**: Artefatos arquiteturais (ADR, Contratos, Schemas) salvos nos diretórios designados pelo manifesto do projeto.
 
 ### 4.4. Product Owner (PO)
 * **Objetivo**: Maximizar o valor de negócio, transformar os requisitos macro em Features e, posteriormente, em Histórias de Usuário (US) acionáveis.
-* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"`.
+* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"` (Gemini 3.8 Flash).
+* **Esforço de Raciocínio (Thinking Effort)**: `medium`. Raciocínio estruturado moderado para decomposição consistente em BDD/Gherkin.
 * **Protocolo Mandatório**: Elabora User Stories baseando-se estritamente nas definições locais de template do projeto para documentação ágil, submetendo a entrega à regra de transição de fase do projeto alvo.
 * **Artefato de Saída**: Artefatos ágeis gerados estritamente nos formatos e diretórios designados pelo manifesto do projeto alvo. Não gere documentos de apoio ou rascunhos que não estejam no manifesto.
 
 ### 4.5. Developer
 * **Objetivo**: Implementar código de produção e testes automatizados com base estrita nas User Stories e protótipos/ADRs já aprovados.
-* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "pro"`.
+* **Modelo LLM Padrão (API)**: O Orquestrador DEVE OBRIGATORIAMENTE chamar a ferramenta `invoke_subagent` com o parâmetro `Model: "flash"` (Gemini 3.8 Flash).
+* **Esforço de Raciocínio (Thinking Effort)**: `high`. O Orquestrador instrui ciclo TDD rigoroso (Red/Green), simulação mental prévia da execução de testes e prevenção de regressão.
+* **Escalação para Argon (`Model: "pro"`)**: Restrita a refatorações complexas de múltiplos arquivos legados com alto acoplamento, ou caso o Developer falhe em fazer os testes passarem após 2 rodadas consecutivas no Flash. **Exige obrigatoriamente recomendação e autorização expressa do usuário no chat**.
 * **Protocolo Mandatório**: Segue as USs, protótipos, contratos e o estilo de código imposto pela governança técnica do projeto (ex: frameworks, arquiteturas base e linters configurados no repositório alvo).
 * **Artefatos de Saída**: Código de produção e testes.
 
@@ -128,7 +136,7 @@ graph TD
 
 ## 5. Protocolo de Handoff (Fluxo de Transição)
 
-**Regra de Ouro para o Orquestrador:** Ao utilizar `invoke_subagent`, o Orquestrador é OBRIGADO a incluir no campo `Prompt` o caminho exato do documento que o subagente deve ler para iniciar seu trabalho. Sempre instrua o subagente a ler o `AGENTS.md` (ou `AI_GOVERNANCE.md`) do projeto local como primeiro passo.
+**Regra de Ouro para o Orquestrador:** Ao utilizar `invoke_subagent`, o Orquestrador é OBRIGADO a incluir no campo `Prompt` o caminho exato do documento que o subagente deve ler para iniciar seu trabalho, bem como a diretriz de **Esforço de Raciocínio (Thinking Effort)** indicada para aquele papel. Sempre instrua o subagente a ler o `AGENTS.md` (ou `AI_GOVERNANCE.md`) do projeto local como primeiro passo.
 
 ---
 
@@ -150,6 +158,17 @@ Sempre que o projeto entrar na fase de implementação (Modo "Ciclo Completo") e
 2. **Delegar em Paralelo**: Sempre que viável, invoque subagentes de Desenvolvimento simultaneamente (ex: um atuando no Frontend e outro no Backend) usando a capacidade multi-agente da ferramenta `invoke_subagent`.
 3. **Limite de Subagentes**: Não levante mais de 2 subagentes em paralelo para a fase de desenvolvimento.
 4. **Cenário Fullstack**: Se a atuação demandar um perfil Fullstack por Feature ou por restrição técnica, utilize estritamente apenas 1 subagente sequencial.
+
+### 6.3 Política Flash-First e Gate de Aprovação de Cota (Argon Approval Gate)
+O DevTeam adota governança estrita de cota e tokens (**Flash-First / FinOps Agêntico**):
+1. **Padrão Mandatório**: Todos os subagentes DEVEM ser iniciados com `Model: "flash"` (Gemini 3.8 Flash).
+2. **Proibição de Escalação Automática**: O Orquestrador está **TERMINANTEMENTE PROIBIDO** de chamar `Model: "pro"` (Gemini 4 Argon) de forma silenciosa ou autônoma.
+3. **Protocolo de Recomendação de Escalação**: Se uma tarefa apresentar complexidade crítica (concorrência severa, arquitetura distribuída, refatoração de código com acoplamento massivo) ou se o Developer falhar em passar os testes após 2 rodadas consecutivas no Flash, o Orquestrador DEVE pausar e apresentar no chat:
+   * **Papel & Demanda**: Qual agente e qual tarefa específica.
+   * **Justificativa Técnica**: Por que o problema demanda o raciocínio de fronteira do Argon.
+   * **Alerta de Cota**: Aviso transparente de que o Argon consome cota e tokens de raciocínio significativamente mais rápido.
+   * **Consulta de Autorização**: *"Deseja autorizar a execução desta etapa com o Gemini 4 Argon (`tier: pro`), ou prefere tentar/manter no Gemini 3.8 Flash (`tier: flash`)?"*
+4. **Subordinação à Decisão Humana**: Somente após a resposta afirmativa do usuário o Orquestrador invocará o subagente com `Model: "pro"`. Se o usuário preferir manter o Flash, a diretriz do usuário é soberana.
 
 ---
 
