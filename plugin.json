@@ -1,10 +1,10 @@
 {
   "name": "dev-team",
-  "displayName": "DevTeam",
+  "displayName": "dev-team",
   "version": "1.0.0",
   "description": "Multi-agent agile development team (Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer) with Docs-as-Code governance and automated testing.",
   "author": {
-    "name": "DevTeam"
+    "name": "dev-team"
   },
   "keywords": [
     "agile",

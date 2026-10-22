@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "name": "DevTeam Model Router",
+  "name": "dev-team Model Router",
   "description": "Matriz de roteamento de LLMs por papel com política Flash-First, calibragem de esforço de raciocínio (thinking effort) e gate de aprovação humana para escalação ao Argon.",
   "version": "1.2.0",
   "default_mode": "flash_first",
