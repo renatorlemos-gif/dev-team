@@ -128,7 +128,6 @@ C:\Dev\Projetos\Particular\dev-team\
 │   ├── refinamento-po/                       # Habilidade do PO (Features e US com BDD/Gherkin)
 │   ├── desenvolvimento/                      # Habilidade do Developer (TDD Red/Green e Paralelismo)
 │   └── diagnostico-bug/                      # Habilidade de triagem e especificação de bugs
-├── hooks.json                                # Configuração de hooks do Antigravity
 ├── plugin.json                               # Manifesto do plugin Antigravity
 └── README.md                                 # Este manual
 ```
