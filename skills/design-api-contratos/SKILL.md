@@ -12,15 +12,15 @@ Esta habilidade é utilizada pelo **Tech Lead / Architect** para converter espec
 ## 1. Bootstrap Obrigatório (Primeiro Passo)
 1. Leia a governança do projeto alvo acessando o arquivo `AGENTS.md` (ou `AI_GOVERNANCE.md`) na raiz do repositório.
 2. Consulte os padrões ditados pelo manifesto do projeto para regras de nomenclatura, verbos HTTP, versionamento, paginação e códigos de erro.
-3. Identifique o diretório canônico onde as especificações de API e Modelagem de Dados devem ser salvas segundo a governança local.
+3. Identifique no manifesto do projeto onde e como as especificações de API e Modelagem de Dados devem ser documentadas e salvas (seja em diretório dedicado de contratos/schemas ou integradas aos artefatos arquiteturais/funcionais mapeados pela governança local).
 
 ---
 
 ## 2. Quando Acionar Esta Habilidade
-- O PRD ou ADR indicar a necessidade de criar ou modificar um endpoint, serviço ou estrutura de banco de dados.
+- A documentação de requisitos ou ADR indicar a necessidade de criar ou modificar um endpoint, serviço ou estrutura de banco de dados.
 - O projeto precisar de documentação técnica formal de contratos (ex: OpenAPI 3.0, GraphQL schema, DDL SQL).
 - Ocorrer uma validação de viabilidade técnica durante a fase Solution Definition (Triagem Macro).
-- Ocorrer um refinamento durante a Micro-Triage de uma Feature (acionada OBRIGATORIAMENTE se o checkbox literal `[x] Requer Decisão Técnica Pontual` estiver marcado).
+- Ocorrer um refinamento durante a Micro-Triage de uma Feature quando a avaliação semântica de impacto indicar necessidade de decisão técnica ou definição de contratos.
 > **🛑 REGRA ANTI-BATCHING:** Na etapa de Triagem Granular (Micro-Triage), você deve atuar EXCLUSIVAMENTE sobre a ÚNICA Feature selecionada na etapa de priorização, criando contratos de API e modelos de dados apenas para o escopo estrito desta Feature específica. É proibido detalhar múltiplas Features em lote.
 
 ---
@@ -33,7 +33,7 @@ Esta habilidade é utilizada pelo **Tech Lead / Architect** para converter espec
    - Schemas rigorosos de Request e Response (payloads JSON detalhados com tipagem).
    - Tratamento mapeado de Erros (HTTP 4xx, 5xx) alinhado com o standard corporativo.
    - Restrições de segurança (Autenticação/Autorização requerida).
-2. O formato de saída preferencial é o padrão de mercado (OpenAPI/Swagger em formato YAML/JSON, ou esquemas .graphql), a menos que os standards da organização exijam documentação em Markdown.
+2. O formato de saída (documentação em Markdown nos templates do projeto, especificações OpenAPI/Swagger em YAML/JSON ou esquemas GraphQL) deve seguir estritamente o que for determinado pelo manifesto e pelos templates do projeto alvo.
 
 ### B. Design de Banco de Dados / Persistência
 1. Elabore o esquema lógico/físico:
@@ -45,6 +45,6 @@ Esta habilidade é utilizada pelo **Tech Lead / Architect** para converter espec
 
 ## 4. Finalização e Vínculo
 
-1. Salve os arquivos de contrato nos caminhos designados pelo manifesto do projeto.
-2. Vincule as referências (caminhos relativos) no ADR ou no PRD correspondente.
-3. Submeta os artefatos técnicos para a validação local do framework do projeto atual.
+1. Salve ou incorpore as especificações de contrato nos caminhos e artefatos designados pelo manifesto do projeto.
+2. Vincule as referências nos artefatos arquiteturais, de requisitos ou de Feature correspondentes.
+3. Submeta os artefatos técnicos para o rito de validação e transição definido no manifesto do projeto atual.

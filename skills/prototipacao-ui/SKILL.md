@@ -1,13 +1,13 @@
 ---
 name: prototipacao-ui
-description: Skill do Agente UX / Product Designer. Constrói protótipos visuais interativos em React/HTML e elabora a Jornada do Usuário como parte da fase Solution Definition.
+description: Skill do Agente UX / Product Designer. Constrói protótipos visuais interativos e elabora a Jornada do Usuário conforme o Design System e governança do projeto alvo.
 ---
 
 # Habilidade: Prototipação UX & Jornada do Usuário
 
-Esta habilidade é utilizada pelo **UX / Product Designer** para converter o PRD (em status `Draft`) em artefatos de experiência do usuário: **protótipos de interface funcionais e clicáveis** e a **jornada do usuário**.
+Esta habilidade é utilizada pelo **UX / Product Designer** para converter os requisitos em artefatos de experiência do usuário: **jornada do usuário** e **protótipos de interface funcionais e interativos**.
 
-> **Pré-requisito:** Esta skill é acionada na **Triagem Macro (PRD Draft)** ou na **Triagem Granular (Micro-Triage de Feature)** (acionada OBRIGATORIAMENTE se o checkbox literal `[x] Requer Refinamento Visual` estiver marcado na Feature).
+> **Pré-requisito:** Esta skill é acionada na **Triagem Macro (Requisitos/PRD)** ou na **Triagem Granular (Micro-Triage de Feature)** sempre que a avaliação semântica de impacto indicar necessidade de design de experiência, jornada ou refinamento visual/interface.
 > **🛑 REGRA ANTI-BATCHING:** Na etapa de Triagem Granular, você deve atuar EXCLUSIVAMENTE sobre a ÚNICA Feature selecionada na etapa de priorização, criando protótipos de tela apenas para o escopo estrito desta Feature específica. É proibido prototipar múltiplas Features em lote.
 
 ---
@@ -15,43 +15,34 @@ Esta habilidade é utilizada pelo **UX / Product Designer** para converter o PRD
 ## 1. Bootstrap Obrigatório (Primeiro Passo)
 1. Leia a governança do projeto alvo acessando o arquivo `AGENTS.md` (ou `AI_GOVERNANCE.md`) na raiz do repositório.
 2. Localize no manifesto do projeto:
-   - O template de Jornada do Usuário.
-   - Os diretórios de destino para protótipos e jornadas UX no projeto real.
-3. Leia o template designado com `view_file` antes de gerar qualquer artefato.
+   - Os artefatos e templates mapeados para UX / Product Design (ex: Jornada do Usuário).
+   - As diretrizes de Design System, componentes e stack tecnológica de prototipação adotadas pelo projeto.
+   - Os diretórios de destino para jornadas UX e protótipos no repositório.
+3. Leia integralmente os templates e diretrizes de design do projeto antes de gerar qualquer artefato.
 
 ---
 
 ## 2. Elaboração da Jornada do Usuário
 
-1. Leia o PRD `Draft` para compreender personas, dores e fluxos de interação.
-2. Utilize o template de Jornada do Usuário encontrado no manifesto do projeto.
-3. Mapeie todas as etapas da jornada: Descoberta → Engajamento → Conversão → Retenção (ou conforme o template exigir).
-4. Salve o documento no diretório de UX designado pelo manifesto do projeto real.
+1. Analise os documentos de requisitos para compreender personas, dores e fluxos de interação.
+2. Utilize estritamente o template de Jornada do Usuário apontado pelo manifesto do projeto (respeitando suas seções, frontmatter e status válidos).
+3. Mapeie todas as etapas, estados emocionais/cognitivos, pontos de contato e fluxos previstos no template.
+4. Salve o documento no diretório designado pelo manifesto do projeto.
 
 ---
 
 ## 3. Construção do Protótipo Funcional
 
-Para cada funcionalidade prototipada, crie uma pasta dedicada no diretório de protótipos designado pelo manifesto do projeto:
-
-```text
-[diretorio-de-prototipos]/[slug-da-feature]/
-├── README.md               # Guia de visualização, componentes e estados mapeados
-├── index.html              # Protótipo standalone executável no navegador (React + Tailwind CDN)
-└── App.jsx                 # Código-fonte React limpo e modular para referência do Developer
-```
-
-### A. Zero Setup (Execução Imediata)
-Prefira gerar o protótipo como um arquivo **`index.html` standalone** utilizando React 18 e Tailwind CSS via CDN:
-* Não exige `npm install`, nem bundler, nem servidor rodando no repositório.
-* O usuário só precisa abrir o arquivo diretamente no navegador para testar interações reais.
+### A. Subordinação ao Design System e Stack do Projeto
+1. **Regra Primária (Padrão do Projeto):** Construa o protótipo utilizando estritamente a estrutura de arquivos, biblioteca/framework, configuração de estilos e diretrizes de componentes definidos no manifesto (`AGENTS.md`) ou na documentação de Design System do projeto alvo.
+2. **Regra de Fallback (Projetos sem Diretriz de Prototipação):** Somente caso o projeto alvo seja omisso quanto à stack ou estrutura de protótipos, gere o protótipo em uma pasta dedicada (`[diretorio-de-prototipos]/[slug-da-feature]/`) contendo um `README.md` e um arquivo `index.html` autocontido (standalone) executável diretamente no navegador.
 
 ### B. Cobertura Obrigatória de Estados de Tela
-Todo protótipo de tela deve demonstrar de forma interativa ou via alternador:
+Independentemente da tecnologia adotada pelo projeto, todo protótipo de tela deve demonstrar de forma clara e navegável:
 1. **Estado Padrão / Vazio:** A tela inicial antes da entrada de dados.
-2. **Estado Carregando (Loading):** Skeletons, spinners ou desabilitação de botões.
-3. **Estado de Validação / Erro:** Destaque de inputs com erro e alertas visuais.
-4. **Estado de Sucesso:** Mensagem de confirmação ou transição para a próxima etapa.
+2. **Estado Carregando (Loading):** Skeletons, spinners ou desabilitação de controles durante processamento.
+3. **Estado de Validação / Erro:** Destaque de campos inválidos e mensagens de erro/alerta.
+4. **Estado de Sucesso:** Confirmação visual ou transição para a próxima etapa do fluxo.
 
 ---
 
@@ -59,4 +50,4 @@ Todo protótipo de tela deve demonstrar de forma interativa ou via alternador:
 
 1. Salve todos os artefatos nos diretórios designados pelo manifesto do projeto.
 2. Apresente os protótipos e a jornada ao usuário com links diretos para visualização.
-3. Aguarde a validação local do framework do projeto atual antes de avançar de fase.
+3. Submeta os artefatos para o rito de validação e transição de fase estipulado no manifesto do projeto atual.

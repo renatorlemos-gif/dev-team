@@ -1,9 +1,9 @@
 ---
 name: analise-requisitos
-description: Skill do Agente Analista de Requisitos. Conduz a elicitação profunda com perguntas investigativas exaustivas e gera o PRD com Triagem de Impacto preenchida, em status Draft.
+description: Skill do Agente Analista de Requisitos. Conduz a elicitação profunda com perguntas investigativas exaustivas e gera os artefatos de Engenharia de Requisitos mapeados pela governança do projeto, com Triagem de Impacto preenchida.
 ---
 
-# Habilidade: Análise de Requisitos e Redação de PRD
+# Habilidade: Engenharia e Análise de Requisitos
 
 Esta habilidade é utilizada para extrair, esclarecer e documentar detalhadamente uma nova demanda do usuário, garantindo que nenhuma ambiguidade chegue às etapas seguintes.
 
@@ -11,8 +11,8 @@ Esta habilidade é utilizada para extrair, esclarecer e documentar detalhadament
 
 ## 1. Bootstrap Obrigatório (Primeiro Passo)
 1. Leia a governança do projeto alvo acessando o arquivo `AGENTS.md` (ou `AI_GOVERNANCE.md`) na raiz do repositório.
-2. Localize no manifesto do projeto qual é o template correspondente a Requisitos (ex: PRD) e o seu diretório de destino.
-3. Leia o template designado pelo projeto antes de iniciar a redação.
+2. Faça o mapeamento semântico na governança do projeto para identificar **todos os artefatos atribuídos ao papel/capacidade de Engenharia de Requisitos** (seja um documento único de especificação/PRD ou uma cadeia sequencial de documentos de insumos, descoberta, levantamento de requisitos e especificação funcional), bem como seus diretórios de destino e regras de nomenclatura.
+3. Leia integralmente todos os templates designados pelo projeto para esses artefatos antes de iniciar a redação.
 
 ---
 
@@ -34,24 +34,24 @@ Após as primeiras respostas do usuário, explore:
 
 ---
 
-## 3. Geração do PRD com Macro-Triagem
+## 3. Geração dos Artefatos de Requisitos e Macro-Triagem
 
-1. Preencha o documento de requisitos seguindo rigorosamente a estrutura do template fornecido pelo projeto.
-2. **OBRIGATÓRIO — Triagem de Impacto Macro (Macro-Triage):** Ao final do documento, preencha a avaliação de impacto macro (ou adicione-a se o template não a tiver, se adaptando ao formato). Estes indicam se a demanda como um todo requer:
-   - **Impacto em UX** (Jornada Macro).
-   - **Impacto em Arquitetura** (ADR sistêmico).
-3. Salve o arquivo no caminho ditado pelo manifesto do projeto, usando a convenção de nomenclatura estipulada lá.
-4. Aplique o status inicial de revisão (ex: `Draft`) conforme estipulado nas regras daquele manifesto.
-5. Caso o usuário solicite alterações durante a revisão, atualize o documento de acordo com a política de versionamento do projeto.
+1. Gere **todos os artefatos mapeados para o seu papel** no manifesto do projeto, respeitando a ordem sequencial, os vínculos de rastreabilidade entre documentos (ex: campos de frontmatter/metadados) e a estrutura exata de seções de cada template fornecido pelo repositório.
+2. **OBRIGATÓRIO — Triagem de Impacto Macro (Macro-Triage):** No documento de especificação/requisitos correspondente, preencha a avaliação de impacto macro seguindo o formato do template do projeto (ou adicione-a caso o projeto não possua template específico). Essa avaliação indica se a demanda requer:
+   - **Impacto em UX** (Jornada do Usuário / Prototipação).
+   - **Impacto em Arquitetura** (Decisão Arquitetural / Contratos Técnicos).
+3. Salve cada arquivo no caminho e com a convenção de nomenclatura ditados pelo manifesto do projeto.
+4. Aplique os valores de status inicial definidos nas regras e schemas daquele manifesto.
+5. Caso o usuário solicite alterações durante a revisão, atualize os documentos mantendo a consistência e a política de versionamento do projeto.
 
 ---
 
-## 4. Promoção do Documento de Requisitos
+## 4. Validação e Promoção dos Artefatos de Requisitos
 
-> **ATENÇÃO:** O AR **NÃO** encerra o processo de requisitos diretamente. O fluxo é:
-> - O AR submete o documento inicial com a Macro-Triage preenchida.
+> **ATENÇÃO:** O AR **NÃO** encerra o processo de requisitos de forma isolada. O fluxo é:
+> - O AR submete os artefatos de requisitos gerados com a Macro-Triage preenchida e validados conforme as regras locais do repositório.
 > - O Orquestrador lê a Macro-Triage e aciona os agentes de Solution Definition (UX Designer e/ou Tech Lead) se necessário.
-> - Somente após a aprovação e a regra de transição do projeto alvo, o documento de Requisitos avança de estágio.
+> - A transição de estágio e de status dos documentos obedece estritamente às regras de Quality Gate do projeto alvo.
 
-Quando o usuário declarar estar 100% satisfeito com o conteúdo textual:
-1. Notifique que a especificação base está pronta e consulte o projeto alvo para a transição de fase correspondente.
+Quando o conteúdo estiver completo e revisado:
+1. Execute as verificações de conformidade estipuladas para os artefatos no manifesto do projeto e notifique o Orquestrador para conduzir o rito de transição de fase correspondente.
