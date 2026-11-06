@@ -2,7 +2,7 @@
   "name": "dev-team",
   "displayName": "dev-team",
   "version": "1.0.0",
-  "description": "Multi-agent agile development team (Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer) with Docs-as-Code governance and automated testing.",
+  "description": "Multi-agent agile development team (Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer, plus on-demand Meeting Minutes Writer) with Docs-as-Code governance and automated testing.",
   "author": {
     "name": "dev-team"
   },
@@ -11,6 +11,7 @@
     "multi-agent",
     "software-engineering",
     "docs-as-code",
-    "tdd"
+    "tdd",
+    "meeting-minutes"
   ]
 }

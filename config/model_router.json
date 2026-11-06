@@ -30,7 +30,7 @@
       "default_model": "flash",
       "runtime_model": "Gemini 3.8 Flash",
       "thinking_effort": "medium",
-      "thinking_budget_rationale": "Mapeamento de jornada e criação de protótipos funcionais (React + Tailwind CDN / HTML) operam com alta qualidade em esforço médio de raciocínio visual.",
+      "thinking_budget_rationale": "Mapeamento de jornada e criação de protótipos funcionais interativos operam com alta qualidade em esforço médio de raciocínio visual.",
       "temperature": 0.3,
       "dynamic_escalation": {
         "condition": "telas com múltiplos estados concorrentes altamente complexos, visualizações gráficas avançadas ou microinterações complexas",
@@ -79,6 +79,22 @@
       "temperature": 0.1,
       "dynamic_escalation": {
         "condition": "refatoração profunda de múltiplos arquivos legados com acoplamento crítico, algoritmos de alta densidade matemática ou falha dos testes após 2 rodadas consecutivas no Flash",
+        "escalated_model": "pro",
+        "escalated_runtime_model": "Gemini 4 Argon",
+        "requires_user_approval": true
+      }
+    },
+    "redator_atas": {
+      "name": "Redator de Atas",
+      "tier": "flash",
+      "default_model": "flash",
+      "runtime_model": "Gemini 3.8 Flash",
+      "thinking_effort": "low",
+      "thinking_budget_rationale": "Transcrever registros de reunião em atas padronizadas exige fidelidade e aderência ao template do projeto, sem criatividade; esforço baixo de raciocínio e temperatura reduzida bastam.",
+      "temperature": 0.2,
+      "optional_on_demand": true,
+      "dynamic_escalation": {
+        "condition": "registro bruto extremamente longo ou ambíguo, com múltiplos interlocutores sobrepostos que o Flash não consiga estruturar com fidelidade",
         "escalated_model": "pro",
         "escalated_runtime_model": "Gemini 4 Argon",
         "requires_user_approval": true
