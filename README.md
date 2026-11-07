@@ -1,35 +1,40 @@
-# dev-team: Time Multi-Agente de Engenharia Ágil & Docs-as-Code
+# dev-team 2.0: Time Multi-Agente de Engenharia Ágil & Docs-as-Code
 
-Bem-vindo ao **dev-team**, um ecossistema multi-agente de desenvolvimento de software de alta performance para o Google Antigravity e VS Code, orientado à governança corporativa **Docs-as-Code**.
+Bem-vindo ao **dev-team 2.0**, um ecossistema multi-agente de engenharia de software para o **Google Antigravity 2.0** e CLI (`agy`), desenhado em **Arquitetura Híbrida (`skills/` + `agents/`)** e subordinado à governança corporativa **Docs-as-Code**.
 
-O dev-team estrutura cinco especialidades independentes que operam em pipeline contínuo e colaborativo, cobrindo todo o ciclo de vida do software: **Analista de Requisitos (AR)**, **UX / Product Designer**, **Tech Lead / Architect**, **Product Owner (PO)** e **Developer**, além do papel opcional e sob demanda **Redator de Atas**, que transforma registros brutos de reunião em atas padronizadas conforme o template e o validador designados pelo manifesto do projeto.
+Diferente de pacotes baseados apenas em skills (que acumulam todas as fases no mesmo contexto da conversa principal), o **dev-team 2.0** combina:
+- **6 Agentes Especialistas Nativos (`agents/*.md`)**: Subagentes reais com **contexto próprio e isolado**, **tier de modelo pré-configurado (`flash` com escalação controlada para `pro`)**, **permissões/ferramentas restritas ao mínimo necessário** (`inheritMcp: false` nos papéis documentais e `sandbox` na execução) e **calibragem cognitiva de esforço no System Prompt**.
+- **9 Skills Modulares (`skills/*/SKILL.md`)**: Mantêm todos os atalhos de barra (`/dev-team`, `/analise-requisitos`, `/prototipacao-ui`, `/decisao-arquitetural`, `/design-api-contratos`, `/refinamento-po`, `/desenvolvimento`, `/diagnostico-bug`, `/redacao-atas`) para invocação direta ou orquestrada.
 
 ```mermaid
 graph TD
     Demanda([Nova Demanda do Usuário]) --> MODO{Modo de Operação?}
 
-    MODO --> AR["1. Analista de Requisitos (AR)<br/>Elicitação & Artefatos de Requisitos com Triagem"]
+    MODO --> AR["1. Agente 'ar' (Analista de Requisitos)<br/>Entrevista (Rodadas 1 e 2) + Requisitos + Macro-Triage"]
 
-    AR --> TRIAGE{"Orquestrador<br/>Triagem de Impacto"}
+    AR --> TRIAGE{"Orquestrador<br/>Lê Macro-Triage"}
 
-    TRIAGE -->|"Impacto em UX"| UX["2. UX Designer<br/>Jornada & Protótipo Interativo"]
-    TRIAGE -->|"Impacto em Arquitetura"| TL["2. Tech Lead / Architect<br/>ADR & Contratos Técnicos"]
-    TRIAGE -->|"Ambos"| BOTH["UX Designer + Tech Lead<br/>em paralelo"]
+    TRIAGE -->|"Impacto em UX"| UX["2. Agente 'ux-designer'<br/>Jornada & Protótipo Interativo"]
+    TRIAGE -->|"Impacto em Arquitetura"| TL["2. Agente 'tech-lead'<br/>ADR & Contratos Técnicos"]
+    TRIAGE -->|"Ambos"| BOTH["⚡ PARALELO: 'ux-designer' + 'tech-lead'<br/>Execução concorrente via invoke_subagent"]
     TRIAGE -->|"Nenhum"| GATE_REQ["Quality Gate do Projeto<br/>(Requisitos & Solution Definition)"]
 
     UX --> GATE_REQ
     TL --> GATE_REQ
     BOTH --> GATE_REQ
 
-    GATE_REQ --> PO_FEAT["3. Product Owner (PO)<br/>Features & Controle de Backlog (WIP=1)"]
-    PO_FEAT --> PO_US["3. Product Owner (PO)<br/>User Stories BDD/Gherkin"]
+    GATE_REQ --> PO_FEAT["3. Agente 'po' (Etapa A)<br/>Features + Backlog + Micro-Triage (WIP=1)"]
+    PO_FEAT --> MICRO{"Orquestrador<br/>Priorização WIP=1 + Micro-Triage"}
+    MICRO -->|"Refinamento UX/Tech"| REFINE["⚡ 'ux-designer' e/ou 'tech-lead'<br/>(Escopo restrito à Feature Única)"]
+    MICRO -->|"Direto"| PO_US["3. Agente 'po' (Etapa B)<br/>User Stories BDD/Gherkin da Feature"]
+    REFINE --> PO_US
 
     PO_US --> GATE_READY["Quality Gate do Projeto<br/>(Definition of Ready)"]
 
     GATE_READY --> DEV_GATE{Modo?}
 
-    DEV_GATE -->|"Docs-as-Code Exclusivo"| HANDOFF([Handoff para Times Externos])
-    DEV_GATE -->|"Ciclo Completo"| DEV["4. Developer<br/>Implementação TDD (Red/Green) + Fechamento DoD"]
+    DEV_GATE -->|"Modo A: Docs-as-Code Exclusivo"| HANDOFF([Handoff para Times Externos])
+    DEV_GATE -->|"Modo B: Ciclo Completo"| DEV["4. ⚡ Agente(s) 'developer'<br/>1x Sequencial ou 2x Paralelo (Front + Back)<br/>TDD (Red/Green) + Fechamento DoD"]
 
     DEV --> LOOP{"Próxima Feature"}
     LOOP -.-> PO_FEAT
@@ -39,69 +44,44 @@ graph TD
 
 ## 0. Regra Mestre de Override (Inversão de Controle)
 
-O dev-team opera com **inteligência subordinada e orientada a capacidades**:
+O `dev-team` opera com **inteligência subordinada e orientada a capacidades**:
 
-1. **Subordinação Integral ao Manifesto do Projeto (`AGENTS.md` / `AI_GOVERNANCE.md`)**: A primeira ação mandatória de qualquer agente é ler o manifesto de governança na raiz do repositório alvo. As diretrizes locais sobre quais artefatos produzir, templates, estrutura de seções, status de ciclo de vida, stack tecnológica, convenções de versionamento e Quality Gates (DoR/DoD) sobrepõem sumariamente quaisquer definições padrão do time.
-2. **Proibição Absoluta de Arquivos Proprietários**: O dev-team é terminantemente proibido de criar arquivos de configuração internos (como `.devteamrc` ou `.devteam-config.yml`) no projeto consumidor. O projeto alvo permanece 100% limpo de metadados da equipe.
-3. **Respeito aos Padrões Locais do Repositório**: Os padrões de engenharia, templates e validadores residem no próprio projeto consumidor, sendo lidos e respeitados dinamicamente a cada atuação.
-
----
-
-## 1. As Especialidades da Equipe
-
-O dev-team fornece os papéis e comportamentos especializados, enquanto **os artefatos exigidos, seus templates, formatos, status e diretórios são 100% governados pelo manifesto `AGENTS.md` do projeto consumidor** (Inversão de Controle).
-
-Abaixo estão as responsabilidades de cada papel:
-
-### 1.1. Analista de Requisitos (AR)
-* **Atribuição**: Elicitação profunda através de questionamento investigativo exaustivo, delimitação de escopo, regras de negócio, produção de toda a cadeia de artefatos de requisitos mapeada pelo projeto e preenchimento da Triagem de Impacto.
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `low` (altíssima velocidade, ampla janela de contexto e consumo mínimo de tokens de reflexão).
-* **Artefatos**: Todos os documentos de descoberta, levantamento e especificação funcional (ex: PRD) atribuídos ao papel no `AGENTS.md` local.
-
-### 1.2. UX / Product Designer
-* **Atribuição**: Mapeamento de fluxos de interação, jornadas do usuário, estados de interface, microinterações e construção de protótipos funcionais interativos alinhados ao Design System do projeto.
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `medium`. Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para interfaces com múltiplos estados concorrentes complexos.
-* **Artefatos**: Documentação de Jornada do Usuário e protótipos interativos na estrutura e stack designadas pelo projeto consumidor.
-
-### 1.3. Tech Lead / Architect
-* **Atribuição**: Avaliação de viabilidade técnica, modelagem de dados, especificações formais de contratos/APIs e registro formal de decisões e trade-offs arquiteturais.
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `high` (reflexão aprofundada para evitar débitos técnicos). Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para arquiteturas distribuídas de missão crítica e concorrência severa.
-* **Artefatos**: Decisões Arquiteturais (ADR) e contratos/schemas técnicos conforme o manifesto local.
-
-### 1.4. Product Owner (PO)
-* **Atribuição**: Decomposição em Features de negócio, manutenção das matrizes/índices de controle de Backlog do projeto e desdobramento em Histórias de Usuário atômicas (WIP=1) com critérios de aceite em BDD/Gherkin, contratos e restrições.
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `medium` (precisão estruturada e formatação consistente sem queima de cota).
-* **Artefatos**: Definições de Feature, controle de Backlog e Histórias de Usuário seguindo os templates do projeto.
-
-### 1.5. Developer
-* **Atribuição**: Implementação do código de produção na stack nativa do projeto e testes automatizados com ciclo TDD rigoroso (Red/Green), respeitando as histórias, protótipos e contratos aprovados, além do cumprimento integral da *Definition of Done* (DoD) local. Suporta paralelismo (ex: Frontend e Backend simultâneos).
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `high` (simulação mental de testes e cobertura completa). Escalação para `pro` (Gemini 4 Argon) sob recomendação e autorização humana para refatoração de código com acoplamento massivo ou após 2 tentativas de falha de teste no Flash.
-* **Trilha de Diagnóstico de Bugs**: Diagnóstico estruturado de causa raiz e roteiro TDD de regressão conforme o fluxo de defeitos definido no projeto.
-
-### 1.6. Redator de Atas (opcional, sob demanda)
-* **Atribuição**: Transformar registros brutos de reunião (transcrição, notas, VTT, texto) em atas padronizadas para consumo por agentes e pessoas. Fora da esteira sequencial; acionado quando o usuário trouxer um registro de reunião ou pedir uma ata. Funciona nos dois modos de operação, pois só produz documentação.
-* **Agnóstico**: Formato, template, destino, nomenclatura, status inicial, schema e validador vêm exclusivamente do manifesto do projeto. Se o projeto não definir o padrão, o papel para e avisa. Nunca inventa decisões, nunca aprova e gera sempre no status inicial.
-* **Modelo LLM**: Tier nativo `flash` (Gemini 3.8 Flash). **Esforço de Raciocínio**: `low`; temperatura 0.2 (fidelidade).
+1. **Subordinação Integral ao Manifesto do Projeto (`AGENTS.md` / `AI_GOVERNANCE.md`)**: A primeira ação mandatória do Orquestrador e de qualquer subagente é ler o manifesto de governança na raiz do repositório alvo. As diretrizes locais sobre quais artefatos produzir, templates, estrutura de seções, status de ciclo de vida, stack tecnológica, convenções de versionamento e Quality Gates (DoR/DoD) sobrepõem sumariamente quaisquer definições padrão do time.
+2. **Proibição Absoluta de Arquivos Proprietários**: O `dev-team` é terminantemente proibido de criar arquivos de configuração internos (como `.devteamrc` ou `.devteam-config.yml`) no projeto consumidor. O projeto alvo permanece 100% limpo de metadados da equipe.
+3. **Passagem de Bastão via Docs-as-Code**: Como cada subagente roda em uma janela de contexto limpa e isolada, o handoff entre papéis ocorre através dos artefatos versionados no repositório (PRD, Jornada, Protótipo, ADR, Contratos, Features e User Stories), mantendo o consumo de tokens estritamente enxuto.
 
 ---
 
-## 2. Modos de Operação do Time
+## 1. Os 6 Agentes Especialistas (`agents/*.md`) e Calibragem Cognitiva
 
-O dev-team adapta sua atuação conforme o escopo acordado no projeto:
+| Agente (`agents/`) | Skills Associadas (`skills/`) | Tier Nativo (`model`) | Escopo de Ferramentas & MCP | Calibragem de Esforço & Escalação (`pro`) |
+| :--- | :--- | :--- | :--- | :--- |
+| **`ar`** (`agents/ar.md`) | `/analise-requisitos` | `flash` | Leitura/escrita documental + `ask_question` (`inheritMcp: false`). Pode atuar como `mainAgent` ou `subagent`. | **Low-Effort / Direto**: Elicitação investigativa em 2 rodadas (mantendo a mesma sessão via `send_message`) + Macro-Triage. Escala para `pro` sob aprovação humana em domínios regulatórios/matemáticos densos. |
+| **`ux-designer`** (`agents/ux-designer.md`) | `/prototipacao-ui` | `flash` | Leitura/escrita + geração de ativos visuais (`inheritMcp: false`). | **Medium-Effort / 4 Estados**: Jornada do Usuário + Protótipos funcionais cobrindo os estados Vazio, Loading, Erro e Sucesso. Escala para `pro` em interfaces com múltiplos estados concorrentes. |
+| **`tech-lead`** (`agents/tech-lead.md`) | `/decisao-arquitetural`<br/>`/design-api-contratos` | `flash` | Leitura/escrita + `run_command` em sandbox + MCPs ativos (`inheritMcp: true`). | **High-Effort / Matriz de Trade-offs**: ADRs comparando alternativas e Contratos Técnicos (OpenAPI, GraphQL, DDL SQL). Escala para `pro` sob aprovação humana em sistemas distribuídos críticos/concorrência severa. |
+| **`po`** (`agents/po.md`) | `/refinamento-po` | `flash` | Leitura/escrita documental (`inheritMcp: false`). | **Medium-Effort / Cadência com STOPS**: Etapa A (Features + Backlog + Micro-Triage) -> STOP -> Etapa B (User Stories BDD/Gherkin atômicas `WIP=1`). |
+| **`developer`** (`agents/developer.md`) | `/desenvolvimento`<br/>`/diagnostico-bug` | `flash` | Engenharia completa + `run_command` em `sandbox` + `manage_task` (`inheritMcp: true`). | **High-Effort / TDD Red-Green + DoD**: Implementação, testes automatizados e diagnóstico de bugs. Suporta execução paralela (Front + Back) com *Exclusive File Ownership*. Disjuntor de escalação para `pro` após 2 rodadas de falha de testes no Flash. |
+| **`redator-atas`** (`agents/redator-atas.md`) | `/redacao-atas` | `flash` | Leitura/escrita documental + `ask_question` + validador (`inheritMcp: false`). | **Low-Effort / Fidelidade Determinística**: Converte registros brutos de reunião em atas fiéis ao que foi dito, seguindo 100% o template e validador do projeto. |
 
-* **Modo A: Docs-as-Code Exclusivo**: Atuação estritamente analítica e arquitetural (Requisitos, UX, Arquitetura e Histórias de Usuário). O time **não cria nem edita código de produção**, entregando especificações blindadas para times ou desenvolvedores externos.
-* **Modo B: Ciclo Completo (End-to-End)**: Concepção completa via Docs-as-Code seguida de implementação em código de produção e testes unitários/integração verdes pelo Developer.
+---
+
+## 2. Paralelismo Real e Economia de Contexto
+
+1. **Paralelismo na Solution Definition (`ux-designer` + `tech-lead`)**:
+   Quando a Triagem indicar impacto simultâneo em UX e Arquitetura, o Orquestrador dispara ambos os subagentes **no mesmo turno** via `invoke_subagent`. Como escrevem em diretórios distintos do repositório, executam de forma 100% concorrente.
+2. **Paralelismo na Implementação (`Developer Frontend` + `Developer Backend`)**:
+   No Modo B (Ciclo Completo), quando uma Feature possui contrato técnico e protótipo aprovados e fronteiras desacopladas, o Orquestrador instancia até **2 subagentes `developer` simultâneos**, atribuindo **Propriedade Exclusiva de Arquivos (*Exclusive File Ownership*)** a cada um para evitar colisões sem perder o ambiente de dependências local.
+3. **Continuidade Multi-Turno por Subagente (`send_message`)**:
+   Nas etapas interativas ou em duas fases (como as Rodadas 1 e 2 do `ar` ou as Etapas A e B do `po`), o Orquestrador reutiliza o `ConversationId` do subagente via `send_message`, preservando o contexto local do especialista.
 
 ---
 
 ## 3. Como Usar no Google Antigravity
 
-Você pode interagir diretamente com o dev-team no chat do Antigravity usando a skill mestre na primeira mensagem da conversa:
-
-* **Iniciar Esteira do dev-team**:
+* **Iniciar Esteira Completa com o Orquestrador**:
   > `/dev-team Vamos iniciar a funcionalidade de autenticação social.`
 
-* **Ou invocar habilidades específicas diretamente**:
+* **Ou acionar habilidades específicas diretamente**:
   * **Análise de Requisitos**: `/analise-requisitos Conduza a entrevista investigativa para o recurso X.`
   * **Prototipação UI**: `/prototipacao-ui Crie a jornada UJ e o protótipo da tela de checkout.`
   * **Decisão Arquitetural**: `/decisao-arquitetural Avalie a migração de cache com uma ADR comparando Redis e Memcached.`
@@ -113,24 +93,27 @@ Você pode interagir diretamente com o dev-team no chat do Antigravity usando a 
 
 ---
 
-## 4. Estrutura de Diretórios do dev-team
-
-Estrutura canônica do plugin:
+## 4. Estrutura Canônica do Plugin (`dev-team 2.0`)
 
 ```text
 dev-team/
-├── config/
-│   └── model_router.json                     # Matriz Flash-First, esforço de raciocínio (thinking effort) e gate de cota
-├── skills/
-│   ├── dev-team/                             # Habilidade Mestre e Orquestrador (Opt-in)
-│   ├── analise-requisitos/                   # Habilidade do AR (Engenharia de Requisitos e Triagem de Impacto)
-│   ├── prototipacao-ui/                      # Habilidade do UX Designer (Jornada do Usuário e Protótipos Interativos)
-│   ├── decisao-arquitetural/                 # Habilidade do Tech Lead (ADRs e Trade-offs)
-│   ├── design-api-contratos/                 # Habilidade do Tech Lead (Contratos de API e Schemas de Dados)
-│   ├── refinamento-po/                       # Habilidade do PO (Features, Backlog e Histórias com BDD/Gherkin)
-│   ├── desenvolvimento/                      # Habilidade do Developer (TDD Red/Green, Paralelismo e Fechamento DoD)
-│   ├── diagnostico-bug/                      # Habilidade de diagnóstico estruturado e regressão TDD de bugs
-│   └── redacao-atas/                         # Habilidade do Redator de Atas (opcional, sob demanda)
-├── plugin.json                               # Manifesto do plugin Antigravity
-└── README.md                                 # Este manual
+├── agents/                                   # "Quem executa": Agentes com contexto isolado, tier de modelo e ferramentas restritas
+│   ├── ar.md                                 # Analista de Requisitos (model: flash, mainAgent: true, subagent: true)
+│   ├── ux-designer.md                        # UX / Product Designer (model: flash, subagent: true)
+│   ├── tech-lead.md                          # Tech Lead / Architect (model: flash, subagent: true, escalável para pro)
+│   ├── po.md                                 # Product Owner (model: flash, subagent: true)
+│   ├── developer.md                          # Developer TDD & Bug Diagnosis (model: flash, sandbox, paralelizável)
+│   └── redator-atas.md                       # Redator de Atas sob demanda (model: flash, fidelidade estrita)
+├── skills/                                   # "Como fazer": Procedimentos modulares e atalhos de barra (/comando)
+│   ├── dev-team/                             # Habilidade Mestre e Orquestrador (Delegação, Gates, FinOps e Paralelismo)
+│   ├── analise-requisitos/                   # Procedimento de Engenharia de Requisitos e Macro-Triage
+│   ├── prototipacao-ui/                      # Procedimento de Jornada do Usuário e Protótipos Interativos (4 estados)
+│   ├── decisao-arquitetural/                 # Procedimento de ADRs e Matriz de Trade-offs
+│   ├── design-api-contratos/                 # Procedimento de Contratos de API e Schemas de Dados
+│   ├── refinamento-po/                       # Procedimento de Features, Backlog e User Stories BDD/Gherkin (WIP=1)
+│   ├── desenvolvimento/                      # Procedimento de TDD Red/Green, Paralelismo e Fechamento DoD
+│   ├── diagnostico-bug/                      # Procedimento de diagnóstico estruturado e regressão TDD de bugs
+│   └── redacao-atas/                         # Procedimento do Redator de Atas (opcional, sob demanda)
+├── plugin.json                               # Manifesto oficial do plugin Antigravity 2.0
+└── README.md                                 # Documentação arquitetural e guia de uso
 ```

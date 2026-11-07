@@ -1,17 +1,14 @@
 {
   "name": "dev-team",
   "displayName": "dev-team",
-  "version": "1.0.0",
-  "description": "Multi-agent agile development team (Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer, plus on-demand Meeting Minutes Writer) with Docs-as-Code governance and automated testing.",
+  "version": "2.0.0",
+  "description": "Multi-agent agile engineering squad (Orchestrator + 6 isolated custom subagents: Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer, and Meeting Minutes Writer) with Flash-First routing, parallel execution, and Docs-as-Code governance.",
   "author": {
     "name": "dev-team"
   },
-  "keywords": [
-    "agile",
-    "multi-agent",
-    "software-engineering",
-    "docs-as-code",
-    "tdd",
-    "meeting-minutes"
+  "suggestedPrompts": [
+    "/dev-team Vamos iniciar uma nova demanda seguindo o manifesto AGENTS.md do projeto",
+    "/analise-requisitos Conduza a entrevista investigativa para levantar os requisitos da nova funcionalidade",
+    "/redacao-atas Gere a ata padronizada a partir do registro bruto da reuniao"
   ]
 }
