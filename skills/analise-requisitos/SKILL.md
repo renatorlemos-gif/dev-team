@@ -16,18 +16,18 @@ Esta habilidade é utilizada para extrair, esclarecer e documentar detalhadament
 
 ---
 
-## 2. Guia de Investigação Exaustiva
+## 2. Guia de Investigação Exaustiva (Com Opções Objetivas Recomendadas)
 
-Ao ser invocado com uma nova solicitação:
+Ao ser invocado com uma nova solicitação, formule cada pergunta acompanhada de **2 a 4 opções objetivas de resposta** (colocando sempre a opção recomendada em primeiro lugar com o prefixo `(Recommended)`), para que o Orquestrador (ou a interface) possa apresentá-las diretamente no componente interativo `ask_question`:
 
 ### Rodada 1: Dúvidas Estruturais (Obrigatória)
-Faça perguntas sobre:
+Faça perguntas com opções estruturadas sobre:
 1. **Problema e Impacto**: Qual é a dor ou gargalo atual? Como o usuário resolve isso hoje?
 2. **Personas e Atores**: Quem utilizará a funcionalidade (administrador, cliente anônimo, operador interno)?
 3. **Fronteiras de Escopo**: Quais recursos são essenciais para o MVP (In-Scope) e quais ficam explicitamente de fora (Não-Objetivos)?
 
 ### Rodada 2: Regras e Limites Técnicos
-Após as primeiras respostas do usuário, explore:
+Após as primeiras respostas do usuário, explore com opções objetivas:
 1. **Fluxos de Erro**: O que deve acontecer quando um dado for incorreto, uma API falhar ou a conexão cair?
 2. **Volumetria e Desempenho**: Quantos registros são esperados? Há requisitos estritos de tempo de resposta?
 3. **Casos de Borda**: O que ocorre com dados duplicados, cancelamentos no meio do fluxo ou concorrência?

@@ -1,8 +1,8 @@
-# dev-team 2.0.1: Time Multi-Agente de Engenharia Ágil & Docs-as-Code
+# dev-team 2.0.2: Time Multi-Agente de Engenharia Ágil & Docs-as-Code
 
-Bem-vindo ao **dev-team 2.0.1**, um ecossistema multi-agente de engenharia de software para o **Google Antigravity 2.0** e CLI (`agy`), desenhado em **Arquitetura Híbrida (`skills/` + `agents/`)** com **Fonte Única de Verdade (`Single Source of Truth`)** e subordinado à governança corporativa **Docs-as-Code**.
+Bem-vindo ao **dev-team 2.0.2**, um ecossistema multi-agente de engenharia de software para o **Google Antigravity 2.0** e CLI (`agy`), desenhado em **Arquitetura Híbrida (`skills/` + `agents/`)** com **Fonte Única de Verdade (`Single Source of Truth`)** e subordinado à governança corporativa **Docs-as-Code**.
 
-Diferente de pacotes baseados apenas em skills (que acumulam todas as fases no mesmo contexto da conversa principal), o **dev-team 2.0.1** separa claramente:
+Diferente de pacotes baseados apenas em skills (que acumulam todas as fases no mesmo contexto da conversa principal), o **dev-team 2.0.2** separa claramente:
 - **6 Agentes Especialistas Nativos (`agents/*.md` — "Quem executa")**: Subagentes enxutos com **contexto próprio e isolado**, **tier de modelo configurado na plataforma (`model: flash` com escalação controlada para `pro`)**, **`inheritMcp: false` por padrão**, **ferramentas restritas ao mínimo necessário** e **trava anti-delegação espontânea (`[Só via /dev-team]`)**.
 - **9 Skills Modulares (`skills/*/SKILL.md` — "Como fazer")**: Constituem a **Fonte Única de Verdade** dos procedimentos de cada papel (evitando duplicação e divergência de manutenção) e preservam todos os atalhos de barra (`/dev-team`, `/analise-requisitos`, `/prototipacao-ui`, `/decisao-arquitetural`, `/design-api-contratos`, `/refinamento-po`, `/desenvolvimento`, `/diagnostico-bug`, `/redacao-atas`).
 

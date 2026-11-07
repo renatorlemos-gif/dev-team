@@ -1,7 +1,7 @@
 {
   "name": "dev-team",
   "displayName": "dev-team",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Multi-agent agile engineering squad (Orchestrator + 6 isolated custom subagents: Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer, and Meeting Minutes Writer) with Flash-First routing, parallel execution, and Docs-as-Code governance.",
   "author": {
     "name": "dev-team"
