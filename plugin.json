@@ -1,14 +1,14 @@
 {
   "name": "dev-team",
   "displayName": "dev-team",
-  "version": "2.0.2",
-  "description": "Multi-agent agile engineering squad (Orchestrator + 6 isolated custom subagents: Requirements Analyst, UX Designer, Tech Lead, Product Owner, Developer, and Meeting Minutes Writer) with Flash-First routing, parallel execution, and Docs-as-Code governance.",
+  "version": "2.1.0",
+  "description": "Multi-agent agile engineering squad (1 Master Orchestrator skill /dev-team + 6 self-contained isolated custom subagents: ar, ux-designer, tech-lead, po, developer, and redator-atas) with Flash-First routing, parallel execution, and Docs-as-Code governance.",
   "author": {
     "name": "dev-team"
   },
   "suggestedPrompts": [
-    "/dev-team Vamos iniciar uma nova demanda seguindo o manifesto AGENTS.md do projeto",
-    "/analise-requisitos Conduza a entrevista investigativa para levantar os requisitos da nova funcionalidade",
-    "/redacao-atas Gere a ata padronizada a partir do registro bruto da reuniao"
+    "/dev-team Vamos iniciar uma nova demanda em Modo B (Ciclo Completo) seguindo o AGENTS.md do projeto",
+    "/dev-team Vamos especificar uma nova funcionalidade em Modo A (Docs-as-Code Exclusivo)",
+    "/dev-team Gere a ata padronizada a partir do registro bruto da reuniao"
   ]
 }
