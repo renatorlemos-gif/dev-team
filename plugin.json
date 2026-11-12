@@ -1,8 +1,8 @@
 {
   "name": "dev-team",
   "displayName": "dev-team",
-  "version": "2.1.0",
-  "description": "Multi-agent agile engineering squad (1 Master Orchestrator skill /dev-team + 6 self-contained isolated custom subagents: ar, ux-designer, tech-lead, po, developer, and redator-atas) with Flash-First routing, parallel execution, and Docs-as-Code governance.",
+  "version": "2.2.0",
+  "description": "Multi-agent agile engineering squad (1 Master Orchestrator skill /dev-team + 6 self-contained isolated custom subagents: ar, ux-designer, tech-lead, po, developer, and redator-atas) with Flash-First routing, conflict-free parallel execution, and project-agnostic Docs-as-Code governance.",
   "author": {
     "name": "dev-team"
   },
