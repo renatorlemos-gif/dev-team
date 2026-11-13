@@ -11,7 +11,7 @@ graph TD
     Demanda([Comando /dev-team do Usuário]) --> ROTA{Tipo de Demanda?}
 
     ROTA -->|"Registro de Reunião"| ATA["Subagente 'redator-atas'<br/>Ata fiel ao registro e validador do projeto"]
-    ROTA -->|"Bug / Rejeição de Review"| BUG["Subagente 'developer'<br/>Diagnóstico Estruturado + Regressão TDD Red/Green"]
+    ROTA -->|"Bug / Review / Sustentação & Operações"| BUG["Subagente 'developer' (ou 'tech-lead')<br/>Diagnóstico + Regressão TDD Red/Green ou Documentação Operacional"]
     ROTA -->|"Nova Funcionalidade (Modo A ou B)"| AR["1. Subagente 'ar' (Analista de Requisitos)<br/>Entrevista (Rodadas 1 e 2 via send_message + ask_question) + Requisitos + Macro-Triage"]
 
     AR --> TRIAGE{"Orquestrador<br/>Lê Macro-Triage"}
@@ -71,14 +71,14 @@ O `dev-team` opera como um **motor agnóstico orientado a capacidades**:
 
 Todos os 6 agentes possuem `mainAgent: false`, `subagent: true`, `inheritMcp: false` e prefixo `[Só via /dev-team]` na descrição para evitar delegação espontânea fora da esteira:
 
-| Agente (`agents/` — Fonte Única) | Capacidades Embutidas no Agente | Tier Nativo (`model`) | Ferramentas Habilitadas (`tools`) | Calibragem Comportamental & Escalação (`pro`) |
+| Agente (`agents/` — Fonte Única) | Capacidades Embutidas no Agente | Tier Nativo (`model`) | Ferramentas Habilitadas (`tools` + nativas de leitura/comunicação) | Calibragem Comportamental & Escalação (`pro`) |
 | :--- | :--- | :--- | :--- | :--- |
-| **`ar`** (`agents/ar.md`) | Engenharia de Requisitos, Entrevista em 2 Rodadas e Macro-Triage | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `read_url_content`, `search_web`, `run_command` | **Low-Effort / Direto**: Elicitação em 2 rodadas (repassadas *verbatim* pelo Orquestrador com widget clicável `ask_question` e respondidas via `send_message`) + Macro-Triage. Escala para `pro` sob aprovação humana em domínios regulatórios/matemáticos densos. |
-| **`ux-designer`** (`agents/ux-designer.md`) | Jornada do Usuário e Prototipação Funcional Interativa (4 estados) | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `generate_image`, `read_url_content`, `search_web`, `run_command` | **Medium-Effort / 4 Estados**: Jornada do Usuário + Protótipos funcionais cobrindo os estados Vazio, Loading, Erro e Sucesso sobre o escopo priorizado. Escala para `pro` em interfaces com múltiplos estados concorrentes. |
-| **`tech-lead`** (`agents/tech-lead.md`) | Decisões Arquiteturais (ADRs) e Design de Contratos Técnicos (APIs/Schemas) | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `run_command`, `read_url_content`, `search_web` | **High-Effort / Matriz de Trade-offs**: ADRs comparando alternativas e Contratos Técnicos (OpenAPI, GraphQL, DDL SQL) sobre o escopo priorizado. Escala para `pro` sob aprovação humana em sistemas distribuídos críticos/concorrência severa. |
-| **`po`** (`agents/po.md`) | Decomposição em Features, Gestão de Backlog, Micro-Triage e User Stories BDD | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `run_command` | **Medium-Effort / Cadência com STOPS**: Etapa A (Features + Backlog + Micro-Triage) $\rightarrow$ STOP $\rightarrow$ Etapa B via `send_message` (User Stories BDD/Gherkin + Mapa de Dependências para paralelismo sem conflito). |
-| **`developer`** (`agents/developer.md`) | Implementação TDD Red/Green, Diagnóstico Estruturado de Bugs e Fechamento DoD | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `run_command`, `manage_task`, `read_url_content`, `search_web` | **High-Effort / TDD Red-Green + DoD**: Implementação, testes automatizados e diagnóstico de bugs. Suporta paralelismo de histórias/camadas sem conflito com proteção de lockfiles. Disjuntor de escalação para `pro` após 2 rodadas de falha de testes no Flash. |
-| **`redator-atas`** (`agents/redator-atas.md`) | Redação de Atas de Reunião fiéis ao registro bruto e ao template local | `flash` | `send_message`, `read_file`, `view_file`, `write_file`, `edit_file`, `run_command` | **Low-Effort / Fidelidade Determinística**: Converte registros brutos de reunião em atas fiéis ao que foi dito, seguindo 100% o template e validador do projeto. |
+| **`ar`** (`agents/ar.md`) | Engenharia de Requisitos, Entrevista em 2 Rodadas e Macro-Triage | `flash` | `write_file`, `edit_file`, `search_web`, `run_command` | **Low-Effort / Direto**: Elicitação em 2 rodadas (repassadas *verbatim* pelo Orquestrador com widget clicável `ask_question` e respondidas via `send_message`) + Macro-Triage. Escala para `pro` sob aprovação humana em domínios regulatórios/matemáticos densos. |
+| **`ux-designer`** (`agents/ux-designer.md`) | Jornada do Usuário e Prototipação Funcional Interativa (4 estados) | `flash` | `write_file`, `edit_file`, `search_web`, `run_command` | **Medium-Effort / 4 Estados**: Jornada do Usuário + Protótipos funcionais cobrindo os estados Vazio, Loading, Erro e Sucesso sobre o escopo priorizado. Escala para `pro` em interfaces com múltiplos estados concorrentes. |
+| **`tech-lead`** (`agents/tech-lead.md`) | Decisões Arquiteturais (ADRs), Contratos Técnicos (APIs/Schemas), Modelagem de Dados/Taxonomia/Ontologia e Operabilidade | `flash` | `write_file`, `edit_file`, `run_command`, `search_web` | **High-Effort / Matriz de Trade-offs**: ADRs comparando alternativas, Contratos Técnicos e Modelagem de Dados (semântica, ontológica e física) sobre o escopo priorizado. Escala para `pro` sob aprovação humana em sistemas distribuídos críticos/concorrência severa. |
+| **`po`** (`agents/po.md`) | Decomposição em Features, Gestão de Backlog, Micro-Triage e User Stories BDD | `flash` | `write_file`, `edit_file`, `run_command` | **Medium-Effort / Cadência com STOPS**: Etapa A (Features + Backlog + Micro-Triage) $\rightarrow$ STOP $\rightarrow$ Etapa B via `send_message` (User Stories BDD/Gherkin + Mapa de Dependências para paralelismo sem conflito). |
+| **`developer`** (`agents/developer.md`) | Implementação TDD Red/Green, Diagnóstico de Bugs, Sustentação/Operações e DoD | `flash` | `write_file`, `edit_file`, `run_command`, `search_web` | **High-Effort / TDD Red-Green + Sustentação + DoD**: Implementação, testes automatizados, diagnóstico de bugs e sustentação/operações. Suporta paralelismo de histórias/camadas sem conflito com proteção de lockfiles. Disjuntor de escalação para `pro` após 2 rodadas de falha de testes no Flash. |
+| **`redator-atas`** (`agents/redator-atas.md`) | Redação de Atas de Reunião fiéis ao registro bruto e ao template local | `flash` | `write_file`, `edit_file`, `run_command` | **Low-Effort / Fidelidade Determinística**: Converte registros brutos de reunião em atas fiéis ao que foi dito, seguindo 100% o template e validador do projeto. |
 
 ---
 
@@ -88,8 +88,9 @@ Você aciona **tudo** por meio de um único comando de entrada (`/dev-team`), e 
 
 * **Iniciar Nova Funcionalidade (Ciclo Completo ou Docs-as-Code)**:
   > `/dev-team Vamos iniciar a funcionalidade de autenticação social.`
-* **Diagnosticar ou Corrigir um Bug**:
+* **Diagnosticar/Corrigir um Bug ou Atuar em Sustentação/Operações**:
   > `/dev-team Diagnostique e corrija em TDD o erro 500 no endpoint de pagamentos.`
+  > `/dev-team Documente o procedimento operacional e a solução de contorno para o incidente de fila.`
 * **Gerar Ata de Reunião a partir de Transcrição/Notas**:
   > `/dev-team Gere a ata padronizada a partir do registro da reunião em docs/raw/reuniao.txt.`
 

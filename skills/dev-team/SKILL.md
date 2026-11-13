@@ -12,9 +12,9 @@ Ao ser ativado por esta skill (`/dev-team`), você assume o papel de **Orquestra
 
 1. **Analista de Requisitos (`ar`)** — `agents/ar.md`
 2. **UX / Product Designer (`ux-designer`)** — `agents/ux-designer.md`
-3. **Tech Lead / Architect (`tech-lead`)** — `agents/tech-lead.md`
+3. **Tech Lead / Architect (`tech-lead`)** — `agents/tech-lead.md` *(Arquitetura, Modelagem de Dados/Taxonomia/Ontologia, Contratos Técnicos e Operabilidade/Resiliência)*
 4. **Product Owner (`po`)** — `agents/po.md`
-5. **Developer (`developer`)** — `agents/developer.md` *(Implementação TDD Red/Green e Diagnóstico Estruturado de Bugs)*
+5. **Developer (`developer`)** — `agents/developer.md` *(Implementação TDD Red/Green, Diagnóstico de Bugs e Sustentação/Operações)*
 6. **Redator de Atas (`redator-atas`)** — `agents/redator-atas.md` *(opcional, sob demanda, fora da esteira sequencial)*
 
 ---
@@ -59,8 +59,8 @@ O Orquestrador identifica automaticamente a natureza do pedido do usuário:
   - **Modo A — Docs-as-Code Exclusivo**: Atuação restrita a documentação estruturada, protótipos visuais e decisões/contratos de arquitetura (`ar`, `ux-designer`, `tech-lead`, `po`). É **terminantemente proibido** invocar o `developer` para alterar código de produção.
   - **Modo B — Ciclo Completo (End-to-End)**: Concepção completa via Docs-as-Code seguida de implementação em código de produção e testes automatizados (TDD Red/Green + DoD) pelo agente `developer`.
   - *Alinhamento de Modo*: Se o usuário iniciar uma demanda de funcionalidade sem especificar Modo A ou Modo B, pergunte no primeiro contato e guarde a escolha exclusivamente na memória da sessão ativa.
-* **Trilha Direta de Diagnóstico/Correção de Bug ou Code Review**:
-  - Se o usuário relatar um bug, erro 500, falha de teste ou apontamento de Code Review em funcionalidade em andamento, delegue diretamente ao subagente `developer` (ou `ar` se o apontamento for estritamente em documento de requisitos).
+* **Trilha Direta de Diagnóstico/Correção de Bug, Code Review ou Sustentação/Operações**:
+  - Se o usuário relatar um bug, incidente, erro em produção, falha de teste, apontamento de Code Review ou solicitar a criação/atualização de documentação e rotinas de sustentação/operações (como procedimentos operacionais/runbooks, soluções de contorno/workarounds, guias de diagnóstico/troubleshooting ou catálogos de configurações operacionais), delegue diretamente ao subagente `developer` (ou `tech-lead` quando envolver decisões arquiteturais de operabilidade/infraestrutura, ou `ar` se o apontamento for estritamente em documento de requisitos).
 * **Trilha Sob Demanda de Atas de Reunião (`redator-atas`)**:
   - Se o usuário fornecer uma transcrição/registro bruto de reunião ou pedir uma ata, delegue diretamente ao subagente `redator-atas` (fora da esteira sequencial).
 
@@ -121,7 +121,7 @@ Todos os 6 agentes em `agents/*.md` são autocontidos e operam por padrão no ti
 | **UX / Product Designer** | `ux-designer` | `flash` | **Medium-Effort / 4 Estados**. Jornada + Protótipos (Vazio, Loading, Erro, Sucesso) no escopo priorizado. | Telas com múltiplos estados concorrentes altamente complexos ou visualizações gráficas avançadas. |
 | **Tech Lead / Architect** | `tech-lead` | `flash` | **High-Effort / Matriz de Trade-offs**. ADRs e Contratos Técnicos (API/Schemas) no escopo priorizado. | Arquitetura distribuída de missão crítica, concorrência/locks severos ou segurança criptográfica/financeira. |
 | **Product Owner** | `po` | `flash` | **Medium-Effort / Cadência com STOPS**. Etapa A (Features + Micro-Triage) $\rightarrow$ STOP $\rightarrow$ Etapa B (User Stories BDD + Mapa de Dependências). | Épicos corporativos massivos com dezenas de histórias e dependências cruzadas entre múltiplos domínios. |
-| **Developer** | `developer` | `flash` | **High-Effort / TDD Red-Green + DoD** (`sandbox`). Implementação TDD e Diagnóstico de Bugs. | Refatoração de legado com acoplamento crítico, algoritmos complexos ou **após 2 rodadas consecutivas de falha de testes no Flash**. |
+| **Developer** | `developer` | `flash` | **High-Effort / TDD Red-Green + Sustentação + DoD** (`sandbox`). Implementação TDD, Diagnóstico de Bugs e Sustentação/Operações. | Refatoração de legado com acoplamento crítico, algoritmos complexos ou **após 2 rodadas consecutivas de falha de testes no Flash**. |
 | **Redator de Atas** *(opcional)* | `redator-atas` | `flash` | **Low-Effort / Fidelidade Literal**. Extração determinística (temp 0.2 equivalente) fiel ao registro bruto. | Transcrição bruta extremamente longa/ambígua com múltiplos interlocutores que o Flash não consiga estruturar. |
 
 ### Regra de Ouro da Escalação (`Argon Approval Gate`) e Disjuntor de 2 Falhas

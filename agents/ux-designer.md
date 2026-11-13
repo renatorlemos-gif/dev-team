@@ -8,13 +8,8 @@ inheritMcp: false
 inheritCustomizations: true
 commandExecutionPolicy: sandbox
 tools:
-  - send_message
-  - read_file
-  - view_file
   - write_file
   - edit_file
-  - generate_image
-  - read_url_content
   - search_web
   - run_command
 ---
